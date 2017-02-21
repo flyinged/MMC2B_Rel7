@@ -1,0 +1,118 @@
+/*******************************************************************************
+ * (c) Copyright 2008 Actel Corporation.  All rights reserved.
+ *
+ * Burn-in Design 1.0.101
+ * 
+ *
+ * SVN $Revision:$
+ * SVN $Date:$
+ */
+#include "main.h"
+#include "mss_uart.h"
+#include "DirectC/dpuser.h"
+#include "DirectC/dpalg.h"
+#include "mss_watchdog.h"
+#include "BSP/spi_flash_driver/spi_flash.h"
+#include "mss_iap.h"
+#include "core_cm3.h"
+
+extern void bx_user_code_envm(void);
+
+void action_menu(void)
+{
+   uint8_t tx_data[25][40] = {
+                                {"\r\n\r\n   Action:                    "},
+                                {"\r\n01 DEVICE_INFO                    "},
+                                {"\r\n02 READ_IDCODE                    "},
+                                {"\r\n03 ERASE                          "},
+                                {"\r\n04 ERASE_ALL                      "},
+                                {"\r\n05 PROGRAM                        "},
+                                {"\r\n06 VERIFY                         "},
+                                {"\r\n07 ENC_DATA_AUTHENTICATION        "},
+                                {"\r\n08 ERASE_ARRAY                    "},
+                                {"\r\n09 PROGRAM_ARRAY                  "},
+                                {"\r\n10 VERIFY_ARRAY                   "},
+                                {"\r\n11 ERASE_FROM                     "},
+                                {"\r\n12 PROGRAM_FROM                   "},
+                                {"\r\n13 VERIFY_FROM                    "},
+                                {"\r\n14 ERASE_SECURITY                 "},
+                                {"\r\n15 PROGRAM_SECURITY               "},
+                                {"\r\n16 PROGRAM_NVM                    "},
+                                {"\r\n17 VERIFY_NVM                     "},
+                                {"\r\n18 VERIFY_DEVICE_INFO             "},
+                                {"\r\n19 READ_USERCODE                  "},
+                                {"\r\n20 PROGRAM_NVM_ACTIVE             "},
+                                {"\r\n21 VERIFY_NVM_ACTIVE              "},
+                                {"\r\n22 IS_CORE_CONFIGURED             "},
+                                {"\r\n23 Branch to eNVM                 "},
+                                {"\r\n Enter 1,2,3,4 .. 23, accordingly "}
+                             };
+
+ 
+   uint8_t rx_data[2]; 
+   uint8_t rx_size =0;
+   uint8_t valid_entry = 0;
+
+   MSS_UART_polled_tx (&g_mss_uart0, tx_data[0],sizeof(tx_data));
+
+   while (!valid_entry)
+   {
+      do {
+            rx_size = MSS_UART_get_rx(&g_mss_uart0, &rx_data[1],1);
+         } while(rx_size == 0);
+      do {
+            rx_size = MSS_UART_get_rx(&g_mss_uart0, &rx_data[0],1);
+         } while(rx_size == 0);
+       
+      Action_code = (rx_data[1] - 48) * 10 + (rx_data[0] - 48);
+      if ((Action_code > 0 ) && (Action_code < 24))
+      {
+         valid_entry = 1;
+      }
+      else
+      {
+         dp_display_text("\n\rInvalid entry.  Try again. ");
+      }
+   }
+   return;
+}
+
+int main(void)
+{
+   /*--------------------------------------------------------------------------
+   * Disable watchdog.
+   */
+   MSS_WD_disable();
+   //NVIC_DisableIRQ( Fabric_IRQn ); //TODO try also to disable all interrupts with __disable_irq()
+   //__disable_irq();
+   MSS_UART_init(&g_mss_uart0, MSS_UART_57600_BAUD, MSS_UART_DATA_8_BITS | MSS_UART_NO_PARITY | MSS_UART_ONE_STOP_BIT );
+
+   spi_flash_init();
+
+   hardware_interface = IAP_SEL;
+    
+   while( 1 )
+   {
+      action_menu();
+
+      if (Action_code == 23) {
+    	  bx_user_code_envm();
+      }
+
+      #ifdef ENABLE_DEBUG          
+         dp_display_text("\r\nPerforming IAP actions...");
+      #endif
+      enable_IAP();
+
+      dp_top();
+      #ifdef ENABLE_DEBUG        
+         dp_display_text("\r\nExit code = ");
+         dp_display_value(error_code,DEC);
+         dp_display_text("\r\n-------------------------------------------------------------------\r\n\r\n ");
+      #endif
+      disable_IAP();
+
+    }
+   return 0;
+}
+

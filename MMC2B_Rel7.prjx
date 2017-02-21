@@ -1,0 +1,2782 @@
+KEY LIBERO "11.5"
+KEY CAPTURE "11.5.2.6"
+KEY DEFAULT_IMPORT_LOC "D:\Appsnotes\2010\User_Logic_to_MSS\design_files\User_Logic_MSS_DF_old\AHB_slave_fabric\stimulus"
+KEY DEFAULT_OPEN_LOC ""
+KEY ProjectID "0"
+KEY HDLTechnology "VHDL"
+KEY VendorTechnology_Family "SmartFusion"
+KEY VendorTechnology_Die "IP6X5M2"
+KEY VendorTechnology_Package "fg256"
+KEY VendorTechnology_Speed "STD"
+KEY VendorTechnology_DieVoltage "1.5"
+KEY VendorTechnology_DSW_VCCA_VOLTAGE_RAMP_RATE ""
+KEY VendorTechnology_IO_DEFT_STD "LVCMOS33"
+KEY VendorTechnology_OPCONR ""
+KEY VendorTechnology_PART_RANGE "COM"
+KEY VendorTechnology_PLL_SUPPLY ""
+KEY VendorTechnology_RAD_EXPOSURE ""
+KEY VendorTechnology_RESTRICTPROBEPINS "1"
+KEY VendorTechnology_SYSTEM_CONTROLLER_SUSPEND_MODE ""
+KEY VendorTechnology_TEMPR "COM"
+KEY VendorTechnology_UNUSED_MSS_IO_RESISTOR_PULL "None"
+KEY VendorTechnology_VCCI_1.5_VOLTR "COM"
+KEY VendorTechnology_VCCI_1.8_VOLTR "COM"
+KEY VendorTechnology_VCCI_2.5_VOLTR "COM"
+KEY VendorTechnology_VCCI_3.3_VOLTR "COM"
+KEY VendorTechnology_VOLTR "COM"
+KEY ProjectLocation "C:\PRJ_Microsemi\MMC2B_Rel7"
+KEY ProjectDescription ""
+KEY Pa4PeripheralNewSeq "GOOD"
+KEY SimulationType "VHDL"
+KEY Vendor "Actel"
+KEY ActiveRoot "MMC2::work"
+LIST REVISIONS
+VALUE="Impl1",NUM=1
+CURREV=1
+ENDLIST
+LIST LIBRARIES
+MSS_BFM_LIB
+COREAPB3_LIB
+COREI2C_LIB
+SMARTFUSION
+ENDLIST
+LIST LIBRARY_MSS_BFM_LIB
+ALIAS=..\component\Actel\SmartFusionMSS\MSS\2.5.106\mti\user_verilog\MSS_BFM_LIB
+COMPILE_OPTION=REFRESH_AND_COMPILE
+CUSTOMPATH=false
+ENDLIST
+LIST LIBRARY_COREAPB3_LIB
+ALIAS=COREAPB3_LIB
+COMPILE_OPTION=COMPILE
+CUSTOMPATH=false
+ENDLIST
+LIST LIBRARY_COREI2C_LIB
+ALIAS=COREI2C_LIB
+COMPILE_OPTION=COMPILE
+CUSTOMPATH=false
+ENDLIST
+LIST LIBRARY_SMARTFUSION
+ALIAS=SMARTFUSION
+COMPILE_OPTION=COMPILE
+CUSTOMPATH=false
+ENDLIST
+LIST FileManager
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484663683"
+SIZE="3259"
+PARENT="<project>\component\work\MMC2\MMC2.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\coreparameters.vhd,tb_hdl"
+STATE="utd"
+TIME="1484663683"
+SIZE="2013"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\mti\scripts\wave_user.do,do"
+STATE="utd"
+TIME="1433496558"
+SIZE="912"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="4009"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="9540"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="2074"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="12455"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="82848"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_package.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="45675"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\misc.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="12780"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="23829"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\components.vhd,hdl"
+STATE="utd"
+TIME="1433496559"
+SIZE="6172"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3.vhd,hdl"
+STATE="utd"
+TIME="1433496559"
+SIZE="78851"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3_iaddr_reg.vhd,hdl"
+STATE="utd"
+TIME="1433496559"
+SIZE="5757"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3_muxptob3.vhd,hdl"
+STATE="utd"
+TIME="1433496559"
+SIZE="9523"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\test\user\testbench.vhd,tb_hdl"
+STATE="utd"
+TIME="1433496558"
+SIZE="28895"
+LIBRARY="COREAPB3_LIB"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+MODULE_UNDER_TEST="testbench"
+SIMULATION_TIME="-all"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\COREI2C.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484663683"
+SIZE="1708"
+PARENT="<project>\component\work\MMC2\MMC2.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\mti\scripts\wave_usertb_vhdl.do,do"
+STATE="utd"
+TIME="1433861768"
+SIZE="886"
+PARENT="<project>\component\Actel\DirectCore\COREI2C\7.1.102\COREI2C.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2c.vhd,hdl"
+STATE="utd"
+TIME="1433861768"
+SIZE="28011"
+LIBRARY="COREI2C_LIB"
+PARENT="<project>\component\Actel\DirectCore\COREI2C\7.1.102\COREI2C.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2creal.vhd,hdl"
+STATE="utd"
+TIME="1433861768"
+SIZE="107118"
+LIBRARY="COREI2C_LIB"
+PARENT="<project>\component\Actel\DirectCore\COREI2C\7.1.102\COREI2C.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2c_pkg.vhd,hdl"
+STATE="utd"
+TIME="1433861768"
+SIZE="840"
+LIBRARY="COREI2C_LIB"
+PARENT="<project>\component\Actel\DirectCore\COREI2C\7.1.102\COREI2C.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\corei2c_tb_pkg.vhd,tb_hdl"
+STATE="utd"
+TIME="1433861768"
+SIZE="35925"
+LIBRARY="COREI2C_LIB"
+PARENT="<project>\component\Actel\DirectCore\COREI2C\7.1.102\COREI2C.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd,tb_hdl"
+STATE="utd"
+TIME="1433861768"
+SIZE="2110"
+LIBRARY="COREI2C_LIB"
+PARENT="<project>\component\Actel\DirectCore\COREI2C\7.1.102\COREI2C.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\tb_user_corei2c.vhd,tb_hdl"
+STATE="utd"
+TIME="1433861768"
+SIZE="42740"
+LIBRARY="COREI2C_LIB"
+PARENT="<project>\component\Actel\DirectCore\COREI2C\7.1.102\COREI2C.cxf"
+MODULE_UNDER_TEST="tb_user_corei2c"
+SIMULATION_TIME="-all"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreInterrupt\1.1.101\CoreInterrupt.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484663683"
+SIZE="724"
+PARENT="<project>\component\work\MMC2\MMC2.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\DirectCore\CoreInterrupt\1.1.101\rtl\vhdl\u\CoreInterrupt.vhd,hdl"
+STATE="utd"
+TIME="1434120987"
+SIZE="16998"
+PARENT="<project>\component\Actel\DirectCore\CoreInterrupt\1.1.101\CoreInterrupt.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS\2.5.106\MSS.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661668"
+SIZE="944"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd,hdl"
+STATE="utd"
+TIME="1433319480"
+SIZE="17580"
+PARENT="<project>\component\Actel\SmartFusionMSS\MSS\2.5.106\MSS.cxf"
+BEGIN_USE_CONSTRAINT
+TOOL_CONSTRAINT_TYPE="ideSYNTHESIS"
+TOOL_CONSTRAINT_USE="SYNPLIFY7_EXT"
+END_USE_CONSTRAINT
+USE_FOR_ANY_TOOL="FALSE"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_ACE\2.2.100\MSS_ACE.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661653"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_CCC\2.0.106\MSS_CCC.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661654"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_CM3\1.0.200\MSS_CM3.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661654"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_COM\1.0.200\MSS_COM.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661654"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_DMA\1.0.101\MSS_DMA.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661654"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_EMI\1.0.100\MSS_EMI.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661654"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_ENVM\2.3.102\MSS_ENVM.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="253"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_FIC\1.0.101\MSS_FIC.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_FIO\1.0.203\MSS_FIO.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_GPIO\1.0.101\MSS_GPIO.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="253"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_I2C\1.0.101\MSS_I2C.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_INTR\1.0.101\MSS_INTR.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="253"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_MAC\2.1.101\MSS_MAC.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_RESET\1.0.101\MSS_RESET.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="254"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_RTC\1.0.100\MSS_RTC.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_SPI\1.0.102\MSS_SPI.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="252"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_TIMER\1.0.100\MSS_TIMER.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="254"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_UART\1.0.101\MSS_UART.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="253"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_UFROM\1.0.100\MSS_UFROM.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="254"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\Actel\SmartFusionMSS\MSS_WATCHDOG\1.0.101\MSS_WATCHDOG.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661659"
+SIZE="257"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\work\DESIGN_FIRMWARE\DESIGN_FIRMWARE.cxf,actgen_cxf"
+STATE="utd"
+TIME="1485769952"
+SIZE="3922"
+ENDFILE
+VALUE "<project>\component\work\DESIGN_IO\DESIGN_IO.cxf,actgen_cxf"
+STATE="utd"
+TIME="1431278951"
+SIZE="413"
+ENDFILE
+VALUE "<project>\component\work\MMC2\MMC2.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484663691"
+SIZE="23269"
+ENDFILE
+VALUE "<project>\component\work\MMC2\MMC2.pdc,pdc"
+STATE="utd"
+TIME="1484663682"
+SIZE="14301"
+PARENT="<project>\component\work\MMC2\MMC2.cxf"
+BEGIN_USE_CONSTRAINT
+TOOL_CONSTRAINT_TYPE="ideDESIGNER"
+END_USE_CONSTRAINT
+USE_FOR_ANY_TOOL="FALSE"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\work\MMC2\MMC2.vhd,hdl"
+STATE="utd"
+TIME="1484663684"
+SIZE="61804"
+PARENT="<project>\component\work\MMC2\MMC2.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\MMC2_MSS.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661675"
+SIZE="33176"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\MMC2_MSS.pdc,pdc"
+STATE="utd"
+TIME="1484661618"
+SIZE="9266"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+BEGIN_USE_CONSTRAINT
+TOOL_CONSTRAINT_TYPE="ideDESIGNER"
+END_USE_CONSTRAINT
+USE_FOR_ANY_TOOL="FALSE"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\MMC2_MSS.vhd,hdl"
+STATE="utd"
+TIME="1484661669"
+SIZE="88147"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\MSS_ACE_0\MSS_ACE_0.log,???"
+STATE="utd"
+TIME="1484661653"
+SIZE="31587"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\MSS_CCC_0\MMC2_MSS_tmp_MSS_CCC_0_MSS_CCC.cxf,actgen_cxf"
+STATE="utd"
+TIME="1484661654"
+SIZE="482"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\MSS_CCC_0\MMC2_MSS_tmp_MSS_CCC_0_MSS_CCC.vhd,hdl"
+STATE="utd"
+TIME="1484661654"
+SIZE="6958"
+PARENT="<project>\component\work\MMC2_MSS\MSS_CCC_0\MMC2_MSS_tmp_MSS_CCC_0_MSS_CCC.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\MSS_ENVM_0\MSS_ENVM_0.efc,efc"
+STATE="utd"
+TIME="1484661658"
+SIZE="341561"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\mss_tshell.vhd,hdl"
+STATE="utd"
+TIME="1484661659"
+SIZE="22849"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+BEGIN_USE_CONSTRAINT
+TOOL_CONSTRAINT_TYPE="ideSYNTHESIS"
+TOOL_CONSTRAINT_USE="SYNPLIFY7_EXT"
+END_USE_CONSTRAINT
+USE_FOR_ANY_TOOL="FALSE"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\component\work\MMC2_MSS\mss_tshell_syn.sdc,sdc"
+STATE="utd"
+TIME="1484661659"
+SIZE="186"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+BEGIN_USE_CONSTRAINT
+TOOL_CONSTRAINT_TYPE="ideSYNTHESIS"
+TOOL_CONSTRAINT_USE="SYNPLIFY7_EXT"
+END_USE_CONSTRAINT
+USE_FOR_ANY_TOOL="FALSE"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\constraint\MMC2.pdc,pdc"
+STATE="utd"
+TIME="1439472101"
+SIZE="2717"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2.adb,adb"
+STATE="ood"
+TIME="1484664128"
+SIZE="35265024"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2.fdb,fdb"
+STATE="ood"
+TIME="1487239316"
+SIZE="189340"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2.ide_des,ide_des"
+STATE="utd"
+TIME="1484664129"
+SIZE="1209"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_compile_log.rpt,log"
+STATE="utd"
+TIME="1484663817"
+SIZE="24589"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_fp\MMC2 - Copy.pdb,pdb"
+STATE="utd"
+TIME="1450780835"
+SIZE="238827"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_fp\MMC2.pdb,pdb"
+STATE="ood"
+TIME="1487241478"
+SIZE="239207"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_fp\MMC2.pro,pro"
+STATE="utd"
+TIME="1487239293"
+SIZE="2217"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_fp\projectData\MMC2.pdb,pdb"
+STATE="utd"
+TIME="1484660301"
+SIZE="238735"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_fp\projectData\MMC2_f35.stp,stp"
+STATE="utd"
+TIME="1464162496"
+SIZE="303861"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_fp\projectData\MMC2_f41_b110_i18.stp,stp"
+STATE="utd"
+TIME="1464693479"
+SIZE="441715"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_identify.adb,adb"
+STATE="ood"
+TIME="1435047822"
+SIZE="3621376"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_identify.ide_des,ide_des"
+STATE="utd"
+TIME="1484663687"
+SIZE="1251"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_identify_identify.ide_des,ide_des"
+STATE="utd"
+TIME="1448293234"
+SIZE="1053"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_placeroute_log.rpt,log"
+STATE="utd"
+TIME="1484664080"
+SIZE="3112"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_prgdata_log.rpt,log"
+STATE="utd"
+TIME="1484664130"
+SIZE="608"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_spi_debug_synthesis_spi_debug.adb,adb"
+STATE="ood"
+TIME="1435232618"
+SIZE="663552"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_spi_debug_synthesis_spi_debug.ide_des,ide_des"
+STATE="utd"
+TIME="1484663687"
+SIZE="1142"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_synthesis_1.ide_des,ide_des"
+STATE="utd"
+TIME="1435048583"
+SIZE="341"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_timingconstraints_log.rpt,log"
+STATE="utd"
+TIME="1448538115"
+SIZE="258"
+ENDFILE
+VALUE "<project>\designer\impl1\MMC2_verifytiming_log.rpt,log"
+STATE="utd"
+TIME="1484664099"
+SIZE="1100"
+ENDFILE
+VALUE "<project>\designer\impl1\MSS_ALL.ide_des,ide_des"
+STATE="utd"
+TIME="1434697902"
+SIZE="180"
+ENDFILE
+VALUE "<project>\hdl\APB3_Regbank.vhd,hdl"
+STATE="utd"
+TIME="1464101054"
+SIZE="9497"
+ENDFILE
+VALUE "<project>\hdl\APB_master.vhd,hdl"
+STATE="utd"
+TIME="1464614834"
+SIZE="4500"
+ENDFILE
+VALUE "<project>\hdl\comps.vhd,hdl"
+STATE="utd"
+TIME="1431679497"
+SIZE="122729"
+LIBRARY="SMARTFUSION"
+ENDFILE
+VALUE "<project>\hdl\FAN_controller.vhd,hdl"
+STATE="utd"
+TIME="1464614845"
+SIZE="28030"
+ENDFILE
+VALUE "<project>\hdl\I2C_auto.vhd,hdl"
+STATE="utd"
+TIME="1464702107"
+SIZE="21731"
+ENDFILE
+VALUE "<project>\hdl\I2C_buffers.vhd,hdl"
+STATE="utd"
+TIME="1434972272"
+SIZE="2130"
+ENDFILE
+VALUE "<project>\hdl\I2C_core_controller.vhd,hdl"
+STATE="utd"
+TIME="1464614862"
+SIZE="9936"
+ENDFILE
+VALUE "<project>\hdl\I2C_FAN_auto.vhd,hdl"
+STATE="utd"
+TIME="1464614869"
+SIZE="23448"
+ENDFILE
+VALUE "<project>\hdl\i2c_link.vhd,hdl"
+STATE="utd"
+TIME="1464682332"
+SIZE="26828"
+ENDFILE
+VALUE "<project>\hdl\I2C_PM_auto.vhd,hdl"
+STATE="utd"
+TIME="1464614874"
+SIZE="13686"
+ENDFILE
+VALUE "<project>\hdl\I2C_TMP_auto.vhd,hdl"
+STATE="utd"
+TIME="1464614880"
+SIZE="11242"
+ENDFILE
+VALUE "<project>\hdl\mbu_mmc_v2b.vhd,hdl"
+STATE="utd"
+TIME="1464614906"
+SIZE="11835"
+ENDFILE
+VALUE "<project>\hdl\mbu_mmc_v2b_APB.vhd,hdl"
+STATE="utd"
+TIME="1484659101"
+SIZE="20871"
+ENDFILE
+VALUE "<project>\hdl\mbu_mmc_v2b_APB_cleanup.vhd,hdl"
+STATE="utd"
+TIME="1464879093"
+SIZE="19848"
+ENDFILE
+VALUE "<project>\hdl\mmap_package_multi.vhd,hdl"
+STATE="utd"
+TIME="1464701990"
+SIZE="49180"
+ENDFILE
+VALUE "<project>\hdl\MSS_I2C_controller.vhd,hdl"
+STATE="utd"
+TIME="1484663575"
+SIZE="65659"
+ENDFILE
+VALUE "<project>\hdl\myfifo.vhd,hdl"
+STATE="utd"
+TIME="1454505343"
+SIZE="7052"
+ENDFILE
+VALUE "<project>\hdl\vio.vhd,hdl"
+STATE="utd"
+TIME="1464093590"
+SIZE="1976"
+ENDFILE
+VALUE "<project>\simulation\bfmtovec_compile.tcl,sim"
+STATE="utd"
+TIME="1433496558"
+SIZE="1229"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+ENDFILE
+VALUE "<project>\simulation\CompileDssBfm.tcl,sim"
+STATE="utd"
+TIME="1433319473"
+SIZE="41"
+PARENT="<project>\component\Actel\SmartFusionMSS\MSS\2.5.106\MSS.cxf"
+ENDFILE
+VALUE "<project>\simulation\coreapb3_usertb_master.bfm,sim"
+STATE="utd"
+TIME="1433496559"
+SIZE="8016"
+PARENT="<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\CoreAPB3.cxf"
+ENDFILE
+VALUE "<project>\simulation\CoreInterrupt_scriptlet.bfm,sim"
+STATE="utd"
+TIME="1434120986"
+SIZE="744"
+PARENT="<project>\component\Actel\DirectCore\CoreInterrupt\1.1.101\CoreInterrupt.cxf"
+ENDFILE
+VALUE "<project>\simulation\subsystem.bfm,sim"
+STATE="utd"
+TIME="1484663684"
+SIZE="986"
+PARENT="<project>\component\work\MMC2\MMC2.cxf"
+ENDFILE
+VALUE "<project>\simulation\test.bfm,sim"
+STATE="utd"
+TIME="1484661654"
+SIZE="9741"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\simulation\user.bfm,sim"
+STATE="utd"
+TIME="1431278916"
+SIZE="670"
+PARENT="<project>\component\work\MMC2_MSS\MMC2_MSS.cxf"
+ENDFILE
+VALUE "<project>\smartgen\fifo8x32b\fifo8x32b.cxf,actgen_cxf"
+STATE="utd"
+TIME="1454081168"
+SIZE="2285"
+ENDFILE
+VALUE "<project>\smartgen\fifo8x32b\fifo8x32b.gen,gen"
+STATE="utd"
+TIME="1454081167"
+SIZE="731"
+PARENT="<project>\smartgen\fifo8x32b\fifo8x32b.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\fifo8x32b\fifo8x32b.log,log"
+STATE="utd"
+TIME="1454081168"
+SIZE="1810"
+PARENT="<project>\smartgen\fifo8x32b\fifo8x32b.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\fifo8x32b\fifo8x32b.vhd,hdl"
+STATE="utd"
+TIME="1454081168"
+SIZE="10527"
+PARENT="<project>\smartgen\fifo8x32b\fifo8x32b.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\ram_128x32\ram_128x32.cxf,actgen_cxf"
+STATE="utd"
+TIME="1448375437"
+SIZE="2702"
+ENDFILE
+VALUE "<project>\smartgen\ram_128x32\ram_128x32.gen,gen"
+STATE="utd"
+TIME="1448375435"
+SIZE="752"
+PARENT="<project>\smartgen\ram_128x32\ram_128x32.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\ram_128x32\ram_128x32.log,log"
+STATE="utd"
+TIME="1448375437"
+SIZE="3485"
+PARENT="<project>\smartgen\ram_128x32\ram_128x32.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\ram_128x32\ram_128x32.vhd,hdl"
+STATE="utd"
+TIME="1448375437"
+SIZE="12628"
+PARENT="<project>\smartgen\ram_128x32\ram_128x32.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.cxf,actgen_cxf"
+STATE="utd"
+TIME="1447862394"
+SIZE="2340"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.gen,gen"
+STATE="utd"
+TIME="1447862391"
+SIZE="749"
+PARENT="<project>\smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.log,log"
+STATE="utd"
+TIME="1447862393"
+SIZE="3011"
+PARENT="<project>\smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.vhd,hdl"
+STATE="utd"
+TIME="1447862393"
+SIZE="12511"
+PARENT="<project>\smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.cxf,actgen_cxf"
+STATE="utd"
+TIME="1450689664"
+SIZE="3527"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.gen,gen"
+STATE="utd"
+TIME="1450689660"
+SIZE="791"
+PARENT="<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.log,log"
+STATE="utd"
+TIME="1450689662"
+SIZE="3531"
+PARENT="<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.vhd,hdl"
+STATE="utd"
+TIME="1450689662"
+SIZE="13076"
+PARENT="<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.cxf"
+IS_READONLY="TRUE"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C0.mem,sim"
+STATE="utd"
+TIME="1450689662"
+SIZE="704"
+PARENT="<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.cxf"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C1.mem,sim"
+STATE="utd"
+TIME="1450689662"
+SIZE="704"
+PARENT="<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.cxf"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C2.mem,sim"
+STATE="utd"
+TIME="1450689662"
+SIZE="704"
+PARENT="<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.cxf"
+ENDFILE
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C3.mem,sim"
+STATE="utd"
+TIME="1450689662"
+SIZE="704"
+PARENT="<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.cxf"
+ENDFILE
+VALUE "<project>\synthesis\MMC2.edn,syn_edn"
+STATE="ood"
+TIME="1484663777"
+SIZE="3322527"
+ENDFILE
+VALUE "<project>\synthesis\MMC2.so,so"
+STATE="utd"
+TIME="1484663777"
+SIZE="205"
+ENDFILE
+VALUE "<project>\synthesis\MMC2_sdc.sdc,syn_sdc"
+STATE="ood"
+TIME="1484663776"
+SIZE="310"
+ENDFILE
+VALUE "<project>\synthesis\MMC2_syn.prj,prj"
+STATE="utd"
+TIME="1484663778"
+SIZE="5113"
+ENDFILE
+VALUE "<project>\synthesis\synthesis_identify\MMC2_identify.edn,syn_edn"
+STATE="ood"
+TIME="1448035127"
+SIZE="5975915"
+ENDFILE
+VALUE "<project>\synthesis\synthesis_spi_debug\MMC2_spi_debug.edn,syn_edn"
+STATE="ood"
+TIME="1435232587"
+SIZE="1882810"
+ENDFILE
+VALUE "<project>\synthesis\synthesis_spi_debug\MMC2_spi_debug.so,so"
+STATE="utd"
+TIME="1435232587"
+SIZE="236"
+ENDFILE
+VALUE "<project>\synthesis\synthesis_spi_debug\MMC2_spi_debug_sdc.sdc,syn_sdc"
+STATE="ood"
+TIME="1435232587"
+SIZE="729"
+ENDFILE
+VALUE "<project>\synthesis\synthesis_spi_debug\synwork\MMC2_comp.so,so"
+STATE="utd"
+TIME="1434982363"
+SIZE="159"
+ENDFILE
+VALUE "<project>\synthesis\synwork\MMC2_comp.so,so"
+STATE="utd"
+TIME="1464606644"
+SIZE="159"
+ENDFILE
+ENDLIST
+LIST UsedFile
+VALUE "<project>\hdl\mbu_mmc_v2b_APB.vhd,MBU_MMC_V2B_APB"
+ENDLIST
+LIST NewModulesInfo
+LIST "CoreInterrupt::work"
+FILE "<project>\component\Actel\DirectCore\CoreInterrupt\1.1.101\rtl\vhdl\u\CoreInterrupt.vhd,hdl"
+LIST Other_Association
+VALUE "<project>\simulation\CoreInterrupt_scriptlet.bfm,sim"
+ENDLIST
+ENDLIST
+LIST "MMC2::work"
+FILE "<project>\component\work\MMC2\MMC2.vhd,hdl"
+LIST Other_Association
+VALUE "<project>\simulation\subsystem.bfm,sim"
+VALUE "<project>\component\work\MMC2\MMC2.pdc,pdc"
+ENDLIST
+LIST ProjectState5.1
+LIST Impl1
+LIST FlowOptions
+UsePhySynth=FALSE
+UseSynth=TRUE
+ENDLIST
+Used_File_List
+VALUE "<project>\synthesis\MMC2.vm,syn_vm"
+VALUE "<project>\designer\impl1\MMC2_fp\MMC2.pro,pro"
+VALUE "<project>\synthesis\MMC2.edn,syn_edn"
+VALUE "<project>\synthesis\MMC2_sdc.sdc,syn_sdc"
+VALUE "<project>\synthesis\MMC2.vhd,syn_hdl"
+VALUE "<project>\phy_synthesis\MMC2_palace.edn,palace_edn"
+VALUE "<project>\phy_synthesis\MMC2_palace.gcf,palace_gcf"
+VALUE "<project>\phy_synthesis\MMC2_palace.pdc,palace_pdc"
+VALUE "<project>\phy_synthesis\MMC2_palace.sdc,palace_sdc"
+VALUE "<project>\phy_synthesis\MMC2_palace.vhd,palace_hdl"
+VALUE "<project>\designer\impl1\MMC2.adb,adb"
+VALUE "<project>\designer\impl1\MMC2.prb,prb"
+VALUE "<project>\designer\impl1\MMC2.fdb,fdb"
+VALUE "<project>\designer\impl1\MMC2.pdb,pdb"
+VALUE "<project>\designer\impl1\MMC2.stp,stp"
+ENDUsed_File_List
+ENDLIST
+ENDLIST
+LIST PinReports
+VALUE "<project>\designer\impl1\MMC2_report_pin_byname.txt,log"
+VALUE "<project>\designer\impl1\MMC2_report_pin_bynumber.txt,log"
+ENDLIST
+ENDLIST
+LIST "MMC2_MSS::work"
+FILE "<project>\component\work\MMC2_MSS\MMC2_MSS.vhd,hdl"
+LIST Other_Association
+VALUE "<project>\component\work\MMC2_MSS\mss_tshell_syn.sdc,sdc"
+VALUE "<project>\simulation\user.bfm,sim"
+VALUE "<project>\simulation\test.bfm,sim"
+VALUE "<project>\component\work\MMC2_MSS\MMC2_MSS.pdc,pdc"
+VALUE "<project>\component\work\MMC2_MSS\MSS_ENVM_0\MSS_ENVM_0.efc,efc"
+VALUE "<project>\simulation\CompileDssBfm.tcl,sim"
+ENDLIST
+LIST SynthesisConstraints
+VALUE "<project>\component\work\MMC2_MSS\mss_tshell_syn.sdc,sdc"
+ENDLIST
+ENDLIST
+LIST "smartfusion_ram_64x32::work"
+FILE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.vhd,hdl"
+LIST Other_Association
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C0.mem,sim"
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C1.mem,sim"
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C2.mem,sim"
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C3.mem,sim"
+ENDLIST
+ENDLIST
+LIST "CoreAPB3::COREAPB3_LIB::components"
+FILE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3.vhd,hdl"
+LIST Other_Association
+VALUE "<project>\simulation\bfmtovec_compile.tcl,sim"
+VALUE "<project>\simulation\coreapb3_usertb_master.bfm,sim"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\coreparameters.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\misc.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_package.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\test\user\testbench.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\mti\scripts\wave_user.do,do"
+ENDLIST
+LIST AssociatedStimulus
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\coreparameters.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\misc.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_package.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\test\user\testbench.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\coreparameters.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\misc.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_package.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\test\user\testbench.vhd,tb_hdl"
+ENDLIST
+LIST ProjectState5.1
+LIST Impl1
+ideSTIMULUS=StateSuccess
+LIST FlowOptions
+UsePhySynth=FALSE
+UseSynth=TRUE
+ENDLIST
+Used_File_List
+ENDUsed_File_List
+ENDLIST
+ENDLIST
+ENDLIST
+LIST "COREI2C::COREI2C_LIB"
+FILE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2c.vhd,hdl"
+LIST Other_Association
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\corei2c_tb_pkg.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\tb_user_corei2c.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\mti\scripts\wave_usertb_vhdl.do,do"
+ENDLIST
+LIST AssociatedStimulus
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\corei2c_tb_pkg.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\tb_user_corei2c.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\corei2c_tb_pkg.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\tb_user_corei2c.vhd,tb_hdl"
+ENDLIST
+LIST ProjectState5.1
+LIST Impl1
+ideSTIMULUS=StateSuccess
+LIST FlowOptions
+UsePhySynth=FALSE
+UseSynth=TRUE
+ENDLIST
+Used_File_List
+ENDUsed_File_List
+ENDLIST
+ENDLIST
+ENDLIST
+ENDLIST
+LIST AssociatedStimulus
+LIST CoreAPB3
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\coreparameters.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\misc.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_package.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\test\user\testbench.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\coreparameters.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\misc.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_package.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\test\user\testbench.vhd,tb_hdl"
+ENDLIST
+LIST COREI2C
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\corei2c_tb_pkg.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\tb_user_corei2c.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\corei2c_tb_pkg.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\tb_user_corei2c.vhd,tb_hdl"
+ENDLIST
+ENDLIST
+LIST Other_Association
+LIST MMC2
+VALUE "<project>\simulation\subsystem.bfm,sim"
+VALUE "<project>\component\work\MMC2\MMC2.pdc,pdc"
+ENDLIST
+LIST CoreAPB3
+VALUE "<project>\simulation\bfmtovec_compile.tcl,sim"
+VALUE "<project>\simulation\coreapb3_usertb_master.bfm,sim"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\coreparameters.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\misc.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_package.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\test\user\testbench.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\CoreAPB3\4.1.100\mti\scripts\wave_user.do,do"
+ENDLIST
+LIST COREI2C
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\corei2c_tb_pkg.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\tb_user_corei2c.vhd,tb_hdl"
+VALUE "<project>\component\Actel\DirectCore\COREI2C\7.1.102\mti\scripts\wave_usertb_vhdl.do,do"
+ENDLIST
+LIST CoreInterrupt
+VALUE "<project>\simulation\CoreInterrupt_scriptlet.bfm,sim"
+ENDLIST
+LIST MMC2_MSS
+VALUE "<project>\component\work\MMC2_MSS\mss_tshell_syn.sdc,sdc"
+VALUE "<project>\simulation\user.bfm,sim"
+VALUE "<project>\simulation\test.bfm,sim"
+VALUE "<project>\component\work\MMC2_MSS\MMC2_MSS.pdc,pdc"
+VALUE "<project>\component\work\MMC2_MSS\MSS_ENVM_0\MSS_ENVM_0.efc,efc"
+VALUE "<project>\simulation\CompileDssBfm.tcl,sim"
+ENDLIST
+LIST smartfusion_ram_64x32
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C0.mem,sim"
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C1.mem,sim"
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C2.mem,sim"
+VALUE "<project>\smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32_R0C3.mem,sim"
+ENDLIST
+ENDLIST
+LIST SimulationOptions
+UseAutomaticDoFile=true
+IncludeWaveDo=false
+Type=max
+RunTime=1000ns
+Resolution=1ps
+VsimOpt=
+EntityName=testbench
+TopInstanceName=<top>_0
+DoFileName=
+DoFileName2=wave.do
+DoFileParams=
+DisplayDUTWave=false
+LogAllSignals=false
+DisablePulseFiltering=false
+DumpVCD=false
+VCDFileName=power.vcd
+VHDL2008=false
+Verilog2001=false
+SystemVerilog=false
+ENDLIST
+LIST ModelSimLibPath
+UseCustomPath=FALSE
+LibraryPath=
+ENDLIST
+LIST GlobalFlowOptions
+GenerateHDLAfterSynthesis=FALSE
+GenerateHDLAfterPhySynthesis=FALSE
+RunDRCAfterSynthesis=TRUE
+AutoCheckConstraints=TRUE
+UpdateModelSimIni=TRUE
+NoIOMode=FALSE
+PeriInitStandalone=FALSE
+EnableViewDraw=FALSE
+UpdateViewDrawIni=TRUE
+GenerateHDLFromSchematic=TRUE
+VmNetlistFlowOn=FALSE
+FlashProInputFile=fdb
+SmartGenCompileReport=T
+ENDLIST
+LIST PhySynthesisOptions
+ENDLIST
+LIST Profiles
+NAME="SoftConsole"
+FUNCTION="SoftwareIDE"
+TOOL="SoftConsole"
+LOCATION="C:\Microsemi\Libero_v11.5\SoftConsole\Eclipse\eclipse.exe"
+PARAM=""
+BATCH=0
+LICENSE=""
+IS32BIT="1"
+EndProfile
+NAME="Synplify Pro ME"
+FUNCTION="Synthesis"
+TOOL="Synplify Pro ME"
+LOCATION="C:\Microsemi\Libero_v11.5\Synopsys\synplify_I201403MSP1\bin\synplify_pro.exe"
+PARAM=""
+BATCH=0
+LICENSE=""
+IS32BIT="1"
+EndProfile
+NAME="ModelSim ME"
+FUNCTION="Simulation"
+TOOL="ModelSim"
+LOCATION="C:\Microsemi\Libero_v11.5\Model\win32acoem\modelsim.exe"
+PARAM=""
+BATCH=0
+LICENSE=""
+IS32BIT="1"
+EndProfile
+NAME="FlashPro"
+FUNCTION="Program"
+TOOL="FlashPro"
+LOCATION="C:\Microsemi\Libero_v11.5\Designer\bin\FlashPro.exe"
+PARAM=""
+BATCH=0
+LICENSE=""
+IS32BIT="1"
+EndProfile
+NAME="Identify Debugger"
+FUNCTION="IdentifyDebugger"
+TOOL="Identify Debugger"
+LOCATION="C:\Microsemi\Libero_v11.5\Synopsys\Identify_me_J201409M1\bin\identify_debugger.exe"
+PARAM=""
+BATCH=0
+LICENSE=""
+IS32BIT="1"
+EndProfile
+ENDLIST
+LIST ProjectState5.1
+LIST "MMC2::work"
+LIST Impl1
+LIST FlowOptions
+UsePhySynth=FALSE
+UseSynth=TRUE
+ENDLIST
+Used_File_List
+VALUE "<project>\synthesis\MMC2.vm,syn_vm"
+VALUE "<project>\designer\impl1\MMC2_fp\MMC2.pro,pro"
+VALUE "<project>\synthesis\MMC2.edn,syn_edn"
+VALUE "<project>\synthesis\MMC2_sdc.sdc,syn_sdc"
+VALUE "<project>\synthesis\MMC2.vhd,syn_hdl"
+VALUE "<project>\phy_synthesis\MMC2_palace.edn,palace_edn"
+VALUE "<project>\phy_synthesis\MMC2_palace.gcf,palace_gcf"
+VALUE "<project>\phy_synthesis\MMC2_palace.pdc,palace_pdc"
+VALUE "<project>\phy_synthesis\MMC2_palace.sdc,palace_sdc"
+VALUE "<project>\phy_synthesis\MMC2_palace.vhd,palace_hdl"
+VALUE "<project>\designer\impl1\MMC2.adb,adb"
+VALUE "<project>\designer\impl1\MMC2.prb,prb"
+VALUE "<project>\designer\impl1\MMC2.fdb,fdb"
+VALUE "<project>\designer\impl1\MMC2.pdb,pdb"
+VALUE "<project>\designer\impl1\MMC2.stp,stp"
+ENDUsed_File_List
+ENDLIST
+ENDLIST
+LIST "CoreAPB3::COREAPB3_LIB::components"
+LIST Impl1
+ideSTIMULUS=StateSuccess
+LIST FlowOptions
+UsePhySynth=FALSE
+UseSynth=TRUE
+ENDLIST
+Used_File_List
+ENDUsed_File_List
+ENDLIST
+ENDLIST
+LIST "COREI2C::COREI2C_LIB"
+LIST Impl1
+ideSTIMULUS=StateSuccess
+LIST FlowOptions
+UsePhySynth=FALSE
+UseSynth=TRUE
+ENDLIST
+Used_File_List
+ENDUsed_File_List
+ENDLIST
+ENDLIST
+ENDLIST
+LIST ExcludePackageForSimulation
+ENDLIST
+LIST ExcludePackageForSynthesis
+ENDLIST
+LIST IncludeModuleForSimulation
+ENDLIST
+LIST CDBOrder
+ENDLIST
+LIST UserCustomizedFileList
+ENDLIST
+LIST OpenedFileList
+ORIENTATION;HORIZONTAL
+StartPage;StartPage;0
+ACTIVEVIEW;StartPage
+ENDLIST
+LIST ModuleSubBlockList
+LIST "APB3_Regbank::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+ENDLIST
+LIST "APB3_regbank_pkg::work","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank_ram::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+ENDLIST
+LIST "APB3_Regbank_ram::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+ENDLIST
+LIST "APB_master::work","hdl\APB_master.vhd","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_OPEND_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "CoreI2C_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "CoreInterrupt::work","component\Actel\DirectCore\CoreInterrupt\1.1.101\rtl\vhdl\u\CoreInterrupt.vhd","FALSE","FALSE"
+ENDLIST
+LIST "CoreInterrupt_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "DESIGN_FIRMWARE::work","component\work\DESIGN_FIRMWARE\DESIGN_FIRMWARE.cxf","TRUE","FALSE"
+SUBBLOCK "CoreI2C_Driver::work","","FALSE","FALSE"
+SUBBLOCK "CoreInterrupt_Driver::work","","FALSE","FALSE"
+SUBBLOCK "HAL::work","","FALSE","FALSE"
+SUBBLOCK "MSS_ACE_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_Ethernet_MAC_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_GPIO_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_I2C_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_IAP_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_NVM_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_PDMA_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_RTC_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_SPI_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_Timer_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_UART_Driver::work","","FALSE","FALSE"
+SUBBLOCK "MSS_Watchdog_Driver::work","","FALSE","FALSE"
+SUBBLOCK "SmartFusion_CMSIS_PAL::work","","FALSE","FALSE"
+ENDLIST
+LIST "DESIGN_IO::work","component\work\DESIGN_IO\DESIGN_IO.cxf","TRUE","FALSE"
+ENDLIST
+LIST "FAN_Controller::work","hdl\FAN_controller.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+SUBBLOCK "APB_master::work","hdl\APB_master.vhd","FALSE","FALSE"
+SUBBLOCK "I2C_core_controller::work","hdl\I2C_core_controller.vhd","FALSE","FALSE"
+ENDLIST
+LIST "fifo8x32b::work","smartgen\fifo8x32b\fifo8x32b.vhd","TRUE","FALSE"
+ENDLIST
+LIST "HAL::work","","FALSE","FALSE"
+ENDLIST
+LIST "I2C_auto::work","hdl\I2C_auto.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank_ram::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+SUBBLOCK "mmap::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+SUBBLOCK "ram_128x32::work","smartgen\ram_128x32\ram_128x32.vhd","TRUE","FALSE"
+ENDLIST
+LIST "I2C_buffers::work","hdl\I2C_buffers.vhd","FALSE","FALSE"
+ENDLIST
+LIST "I2C_core_controller::work","hdl\I2C_core_controller.vhd","FALSE","FALSE"
+ENDLIST
+LIST "I2C_FAN_auto::work","hdl\I2C_FAN_auto.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+SUBBLOCK "mmap::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+ENDLIST
+LIST "i2c_link_package::work","hdl\i2c_link.vhd","FALSE","FALSE"
+SUBBLOCK "i2c_link_v4::work::i2c_link_package","hdl\i2c_link.vhd","FALSE","FALSE"
+ENDLIST
+LIST "i2c_link_v4::work::i2c_link_package","hdl\i2c_link.vhd","FALSE","FALSE"
+ENDLIST
+LIST "I2C_PM_auto::work","hdl\I2C_PM_auto.vhd","FALSE","FALSE"
+SUBBLOCK "mmap::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+ENDLIST
+LIST "I2C_TMP_auto::work","hdl\I2C_TMP_auto.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+SUBBLOCK "mmap::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVDS_MCCC::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVPECL_MCCC::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_MCCC::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "mbu_mmc_v2b::work","hdl\mbu_mmc_v2b.vhd","FALSE","FALSE"
+SUBBLOCK "TPS3106K33::work","hdl\mbu_mmc_v2b.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MBU_MMC_V2B_APB::work","hdl\mbu_mmc_v2b_APB.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+SUBBLOCK "mbu_mmc_v2b::work","hdl\mbu_mmc_v2b.vhd","FALSE","FALSE"
+ENDLIST
+LIST "mmap::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+SUBBLOCK "rom::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+SUBBLOCK "virtex5_fifo_128x48::work","","FALSE","FALSE"
+SUBBLOCK "spartan3a_fifo_128x48::work","","FALSE","FALSE"
+SUBBLOCK "virtex5_bram_1024x32::work","","FALSE","FALSE"
+SUBBLOCK "spartan3a_bram_1024x32::work","","FALSE","FALSE"
+SUBBLOCK "i2c_link_v4::work::i2c_link_package","hdl\i2c_link.vhd","FALSE","FALSE"
+SUBBLOCK "smartfusion_fifo_32x48::work","smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.vhd","TRUE","FALSE"
+SUBBLOCK "smartfusion_ram_64x32::work","smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.vhd","TRUE","FALSE"
+ENDLIST
+LIST "mmap_package_multi::work","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+SUBBLOCK "rom::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+SUBBLOCK "mmap::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MMC2::work","component\work\MMC2\MMC2.vhd","TRUE","FALSE"
+SUBBLOCK "I2C_buffers::work","hdl\I2C_buffers.vhd","FALSE","FALSE"
+SUBBLOCK "MBU_MMC_V2B_APB::work","hdl\mbu_mmc_v2b_APB.vhd","FALSE","FALSE"
+SUBBLOCK "MSS_I2C_controller::work","hdl\MSS_I2C_controller.vhd","FALSE","FALSE"
+SUBBLOCK "CoreAPB3::COREAPB3_LIB::components","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3.vhd","FALSE","FALSE"
+SUBBLOCK "COREI2C::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2c.vhd","FALSE","FALSE"
+SUBBLOCK "CoreInterrupt::work","component\Actel\DirectCore\CoreInterrupt\1.1.101\rtl\vhdl\u\CoreInterrupt.vhd","FALSE","FALSE"
+SUBBLOCK "MMC2_MSS::work","component\work\MMC2_MSS\MMC2_MSS.vhd","TRUE","FALSE"
+ENDLIST
+LIST "MMC2_MSS::work","component\work\MMC2_MSS\MMC2_MSS.vhd","TRUE","FALSE"
+SUBBLOCK "MSSINT_SOFT::work","component\work\MMC2_MSS\MMC2_MSS.vhd","FALSE","FALSE"
+SUBBLOCK "MSS_APB::work","component\work\MMC2_MSS\mss_tshell.vhd","FALSE","FALSE"
+SUBBLOCK "MMC2_MSS_tmp_MSS_CCC_0_MSS_CCC::work","component\work\MMC2_MSS\MSS_CCC_0\MMC2_MSS_tmp_MSS_CCC_0_MSS_CCC.vhd","FALSE","FALSE"
+SUBBLOCK "BIBUF_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+SUBBLOCK "BIBUF_OPEND_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+SUBBLOCK "INBUF_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+SUBBLOCK "OUTBUF_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MMC2_MSS_tmp_MSS_CCC_0_MSS_CCC::work","component\work\MMC2_MSS\MSS_CCC_0\MMC2_MSS_tmp_MSS_CCC_0_MSS_CCC.vhd","FALSE","FALSE"
+SUBBLOCK "MSS_CCC::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+SUBBLOCK "MSS_XTLOSC::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MSS_ACE_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_ALL::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MSS_APB::work","component\work\MMC2_MSS\mss_tshell.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MSS_CCC::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MSS_Ethernet_MAC_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_GPIO_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_I2C_controller::work","hdl\MSS_I2C_controller.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank_ram::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+SUBBLOCK "APB_master::work","hdl\APB_master.vhd","FALSE","FALSE"
+SUBBLOCK "myfifo::work","hdl\myfifo.vhd","FALSE","FALSE"
+SUBBLOCK "ram_128x32::work","smartgen\ram_128x32\ram_128x32.vhd","TRUE","FALSE"
+ENDLIST
+LIST "MSS_I2C_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_IAP_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_LPXTLOSC::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MSS_NVM_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_PDMA_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_RTC_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_SPI_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_Timer_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_UART_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_Watchdog_Driver::work","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_XTLOSC::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MSSINT::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "MSSINT_SOFT::work","component\work\MMC2_MSS\MMC2_MSS.vhd","FALSE","FALSE"
+SUBBLOCK "MSSINT::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "myfifo::work","hdl\myfifo.vhd","FALSE","FALSE"
+ENDLIST
+LIST "myfifo_tb::work","hdl\myfifo.vhd","FALSE","FALSE"
+SUBBLOCK "myfifo::work","hdl\myfifo.vhd","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "ram_128x32::work","smartgen\ram_128x32\ram_128x32.vhd","TRUE","FALSE"
+ENDLIST
+LIST "rom::work::mmap_package_multi","hdl\mmap_package_multi.vhd","FALSE","FALSE"
+ENDLIST
+LIST "SmartFusion_CMSIS_PAL::work","","FALSE","FALSE"
+ENDLIST
+LIST "smartfusion_fifo_32x48::work","smartgen\smartfusion_fifo_32x48\smartfusion_fifo_32x48.vhd","TRUE","FALSE"
+ENDLIST
+LIST "smartfusion_ram_64x32::work","smartgen\smartfusion_ram_64x32\smartfusion_ram_64x32.vhd","TRUE","FALSE"
+ENDLIST
+LIST "spartan3a_bram_1024x32::work","","FALSE","FALSE"
+ENDLIST
+LIST "spartan3a_fifo_128x48::work","","FALSE","FALSE"
+ENDLIST
+LIST "TPS3106K33::work","hdl\mbu_mmc_v2b.vhd","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_MSS::work","component\Actel\SmartFusionMSS\MSS\2.5.106\mss_comps.vhd","FALSE","FALSE"
+ENDLIST
+LIST "vio::work","hdl\vio.vhd","FALSE","FALSE"
+SUBBLOCK "APB3_Regbank::work::APB3_regbank_pkg","hdl\APB3_Regbank.vhd","FALSE","FALSE"
+ENDLIST
+LIST "virtex5_bram_1024x32::work","","FALSE","FALSE"
+ENDLIST
+LIST "virtex5_fifo_128x48::work","","FALSE","FALSE"
+ENDLIST
+LIST "components::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\components.vhd","FALSE","FALSE"
+SUBBLOCK "CoreAPB3::COREAPB3_LIB::components","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3.vhd","FALSE","FALSE"
+ENDLIST
+LIST "CoreAPB3::COREAPB3_LIB::components","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3.vhd","FALSE","FALSE"
+SUBBLOCK "COREAPB3_MUXPTOB3::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3_muxptob3.vhd","FALSE","FALSE"
+SUBBLOCK "coreapb3_iaddr_reg::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3_iaddr_reg.vhd","FALSE","FALSE"
+ENDLIST
+LIST "coreapb3_iaddr_reg::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3_iaddr_reg.vhd","FALSE","FALSE"
+ENDLIST
+LIST "COREAPB3_MUXPTOB3::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3_muxptob3.vhd","FALSE","FALSE"
+ENDLIST
+LIST "bfM_Ahbl::COREAPB3_LIB","","FALSE","FALSE"
+ENDLIST
+LIST "bfM_ahblAPB::COREAPB3_LIB","","FALSE","FALSE"
+ENDLIST
+LIST "BFM_ahbSLAve::COREAPB3_LIB","","FALSE","FALSE"
+ENDLIST
+LIST "Bfm_aHBSlavEEXt::COREAPB3_LIB","","FALSE","FALSE"
+ENDLIST
+LIST "bfm_APb::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd","FALSE","TRUE"
+SUBBLOCK "bfm_Main::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd","FALSE","TRUE"
+SUBBLOCK "BFMA1i1lI::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd","FALSE","TRUE"
+ENDLIST
+LIST "Bfm_aPB2apb::COREAPB3_LIB","","FALSE","FALSE"
+ENDLIST
+LIST "BFM_apbSLAve::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd","FALSE","TRUE"
+SUBBLOCK "BFm_apBSLaveEXT::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd","FALSE","TRUE"
+ENDLIST
+LIST "BFm_apBSLaveEXT::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslaveext.vhd","FALSE","TRUE"
+ENDLIST
+LIST "bfm_Main::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_main.vhd","FALSE","TRUE"
+ENDLIST
+LIST "bfm_misc::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\misc.vhd","FALSE","TRUE"
+ENDLIST
+LIST "bfM_packAGE::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_package.vhd","FALSE","TRUE"
+SUBBLOCK "Bfm_aHBSlavEEXt::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "BFM_ahbSLAve::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "bfM_Ahbl::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "bfM_ahblAPB::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "Bfm_aPB2apb::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "bfm_Main::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "BFMA1i1lI::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "bfm_APb::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "BFm_apBSLaveEXT::COREAPB3_LIB","","FALSE","FALSE"
+SUBBLOCK "BFM_apbSLAve::COREAPB3_LIB","","FALSE","FALSE"
+ENDLIST
+LIST "bfm_textio::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd","FALSE","TRUE"
+ENDLIST
+LIST "bfm_textio_test::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\textio.vhd","FALSE","TRUE"
+ENDLIST
+LIST "BFMA1i1lI::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_ahbtoapb.vhd","FALSE","TRUE"
+ENDLIST
+LIST "coreparameters::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\coreparameters.vhd","FALSE","TRUE"
+ENDLIST
+LIST "testbench::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\test\user\testbench.vhd","FALSE","TRUE"
+SUBBLOCK "CoreAPB3::COREAPB3_LIB::components","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\core\coreapb3.vhd","FALSE","FALSE"
+SUBBLOCK "bfm_APb::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apb.vhd","FALSE","TRUE"
+SUBBLOCK "BFM_apbSLAve::COREAPB3_LIB","component\Actel\DirectCore\CoreAPB3\4.1.100\rtl\vhdl\amba_bfm\bfm_apbslave.vhd","FALSE","TRUE"
+ENDLIST
+LIST "COREI2C::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2c.vhd","FALSE","FALSE"
+SUBBLOCK "COREI2CREAL::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2creal.vhd","FALSE","FALSE"
+ENDLIST
+LIST "corei2c_pkg::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2c_pkg.vhd","FALSE","FALSE"
+ENDLIST
+LIST "COREI2CREAL::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2creal.vhd","FALSE","FALSE"
+ENDLIST
+LIST "corei2c_tb_pkg::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\corei2c_tb_pkg.vhd","FALSE","TRUE"
+ENDLIST
+LIST "i2c_spk::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd","FALSE","TRUE"
+ENDLIST
+LIST "tb_user_corei2c::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\tb_user_corei2c.vhd","FALSE","TRUE"
+SUBBLOCK "COREI2C::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\core\corei2c.vhd","FALSE","FALSE"
+SUBBLOCK "i2c_spk::COREI2C_LIB","component\Actel\DirectCore\COREI2C\7.1.102\rtl\vhdl\test\user\i2c_spk.vhd","FALSE","TRUE"
+ENDLIST
+LIST "AND2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AND2A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AND2B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AND3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AND3A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AND3B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AND3C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO12::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO13::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO14::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO15::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO16::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO17::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO18::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO1A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO1B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO1C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO1D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AO1E::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AOI1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AOI1A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AOI1B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AOI1C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AOI1D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AOI5::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AX1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AX1A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AX1B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AX1C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AX1D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AX1E::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXO1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXO2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXO3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXO5::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXO6::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXO7::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXOI1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXOI2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXOI3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXOI4::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXOI5::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "AXOI7::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_12::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_12D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_12U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_16::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_16D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_16U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_24::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_24D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_24U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_2D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_2U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_4::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_4D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_4U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_6::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_6D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_6U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_8::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_8D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_F_8U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS15D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS15U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS18D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS18U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS25D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS25U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS33D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS33U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS5D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVCMOS5U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_LVDS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_MSS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_OPEND_MSS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_PCI::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_PCIX::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_12::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_12D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_12U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_16::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_16D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_16U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_24::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_24D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_24U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_2D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_2U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_4::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_4D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_4U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_6::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_6D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_6U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_8::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_8D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BIBUF_S_8U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BUFD::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "BUFF::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBIBUF::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_LVDS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_LVPECL::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_PCI::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKBUF_PCIX::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKDLY::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKINT::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "CLKSRC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "COMPONENTS::SMARTFUSION","hdl\comps.vhd","FALSE","FALSE"
+SUBBLOCK "AND2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AND2A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AND2B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AND3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AND3A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AND3B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AND3C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO12::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO13::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO14::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO15::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO16::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO17::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO18::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO1A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO1B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO1C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO1D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AO1E::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AOI1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AOI1A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AOI1B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AOI1C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AOI1D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AOI5::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AX1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AX1A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AX1B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AX1C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AX1D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AX1E::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXO1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXO2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXO3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXO5::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXO6::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXO7::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXOI1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXOI2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXOI3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXOI4::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXOI5::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "AXOI7::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "PLLINT::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BUFD::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INVD::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_MSS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_12::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_12D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_12U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_16::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_16D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_16U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_24::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_24D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_24U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_8::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_8D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_8U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS15D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS15U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS18D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS18U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS25D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS25U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS33D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS33U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS5D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVCMOS5U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_PCI::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_PCIX::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_12::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_12D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_12U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_16::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_16D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_16U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_24::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_24D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_24U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_8::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_8D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_8U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_LVDS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_LVPECL::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_PCI::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBUF_PCIX::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E0C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E0C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E0P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E0P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E1C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E1P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0E1P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI0P1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E0C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E0C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E0P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E0P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E1C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E1P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1E1P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFI1P1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E0C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E0C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E0P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E0P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E1C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E1P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0E1P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN0P1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E0C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E0C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E0P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E0P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E1C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E1P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1E1P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DFN1P1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI0C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI0C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI0P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI0P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI0P1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI1C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI1P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI1P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLI1P1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN0C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN0C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN0P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN0P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN0P1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN1C0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN1P0::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN1P1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DLN1P1C1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "GND::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_MSS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_MCCC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_DA::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS15D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS15U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS18D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS18U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS25D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS25U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS33D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS33U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS5D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVCMOS5U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVDS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVDS_MCCC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVPECL::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_LVPECL_MCCC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_PCI::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INBUF_PCIX::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "INV::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MAJ3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MAJ3X::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MAJ3XI::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MIN3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MIN3X::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MIN3XI::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MX2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MX2A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MX2B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MX2C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NAND2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NAND2A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NAND2B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NAND3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NAND3A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NAND3B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NAND3C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NOR2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NOR2A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NOR2B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NOR3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NOR3A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NOR3B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "NOR3C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OA1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OA1A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OA1B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OA1C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OAI1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OR2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OR2A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OR2B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OR3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OR3A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OR3B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OR3C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_MSS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_F_12::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_F_16::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_F_24::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_F_8::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_LVDS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_LVPECL::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_PCI::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_PCIX::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_S_12::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_S_16::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_S_24::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_S_8::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_MSS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_12::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_12D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_12U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_16::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_16D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_16U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_24::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_24D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_24U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_8::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_8D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_8U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS15D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS15U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS18D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS18U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS25D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS25U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS33D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS33U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS5D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVCMOS5U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_PCI::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_PCIX::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_12::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_12D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_12U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_16::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_16D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_16U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_24::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_24D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_24U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_8::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_8D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_8U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "VCC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XA1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XA1A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XA1B::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XA1C::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XAI1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XAI1A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XNOR2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XNOR3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XO1::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XO1A::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XOR2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "XOR3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "ZOR3::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "ZOR3I::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BUFF::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKINT::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DDR_REG::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "DDR_OUT::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "RAM4K9::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "RAM512X18::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "FIFO4K18::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_2D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_2U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_4::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_4D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_4U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_6::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_6D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_F_6U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_2D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_2U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_4::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_4D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_4U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_6::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_6D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_S_6U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_F_2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_F_4::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_F_6::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_S_2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_S_4::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "OUTBUF_S_6::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_2D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_2U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_4::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_4D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_4U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_6::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_6D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_F_6U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_2::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_2D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_2U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_4::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_4D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_4U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_6::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_6D::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_S_6U::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKDLY::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "UJTAG::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKBIBUF::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "CLKSRC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "RCOSC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_LVDS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "TRIBUFF_LVDS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "SIMBUF::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "BIBUF_OPEND_MSS::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MSSINT::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MSS_XTLOSC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MSS_LPXTLOSC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MSS_AHB::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MSS_APB::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "MSS_CCC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "FAB_CCC::SMARTFUSION","","FALSE","FALSE"
+SUBBLOCK "FAB_CCC_DYN::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DDR_OUT::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DDR_REG::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E0C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E0C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E0P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E0P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E1C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E1P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0E1P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI0P1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E0C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E0C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E0P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E0P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E1C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E1P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1E1P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFI1P1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E0C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E0C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E0P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E0P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E1C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E1P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0E1P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN0P1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E0C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E0C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E0P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E0P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E1C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E1P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1E1P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DFN1P1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI0C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI0C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI0P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI0P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI0P1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI1C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI1P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI1P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLI1P1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN0C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN0C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN0P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN0P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN0P1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN1C0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN1P0::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN1P1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "DLN1P1C1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "FAB_CCC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "FAB_CCC_DYN::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "FIFO4K18::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "GND::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_DA::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS15D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS15U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS18D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS18U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS25D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS25U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS33D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS33U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS5D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVCMOS5U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVDS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVDS_MCCC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVPECL::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_LVPECL_MCCC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_MCCC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_MSS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_PCI::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INBUF_PCIX::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INV::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "INVD::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MAJ3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MAJ3X::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MAJ3XI::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MIN3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MIN3X::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MIN3XI::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_AHB::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_APB::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_CCC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_LPXTLOSC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MSS_XTLOSC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MSSINT::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MX2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MX2A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MX2B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "MX2C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NAND2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NAND2A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NAND2B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NAND3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NAND3A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NAND3B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NAND3C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NOR2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NOR2A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NOR2B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NOR3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NOR3A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NOR3B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "NOR3C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OA1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OA1A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OA1B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OA1C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OAI1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OR2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OR2A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OR2B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OR3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OR3A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OR3B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OR3C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_F_12::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_F_16::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_F_2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_F_24::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_F_4::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_F_6::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_F_8::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_LVDS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_LVPECL::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_MSS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_PCI::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_PCIX::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_S_12::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_S_16::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_S_2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_S_24::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_S_4::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_S_6::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "OUTBUF_S_8::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "PLLINT::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "RAM4K9::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "RAM512X18::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "RCOSC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "SIMBUF::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_12::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_12D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_12U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_16::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_16D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_16U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_24::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_24D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_24U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_2D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_2U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_4::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_4D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_4U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_6::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_6D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_6U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_8::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_8D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_F_8U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS15::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS15D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS15U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS18::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS18D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS18U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS25::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS25D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS25U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS33::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS33D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS33U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS5::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS5D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVCMOS5U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_LVDS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_MSS::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_PCI::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_PCIX::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_12::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_12D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_12U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_16::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_16D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_16U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_24::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_24D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_24U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_2D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_2U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_4::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_4D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_4U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_6::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_6D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_6U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_8::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_8D::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "TRIBUFF_S_8U::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "UJTAG::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "VCC::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XA1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XA1A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XA1B::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XA1C::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XAI1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XAI1A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XNOR2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XNOR3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XO1::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XO1A::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XOR2::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "XOR3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "ZOR3::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+LIST "ZOR3I::SMARTFUSION","","FALSE","FALSE"
+ENDLIST
+ENDLIST
+LIST ActiveTestBenchList
+ENDLIST

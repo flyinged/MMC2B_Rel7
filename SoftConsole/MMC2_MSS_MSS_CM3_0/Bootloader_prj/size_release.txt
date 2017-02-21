@@ -1,0 +1,2 @@
+   text	   data	    bss	    dec	    hex	filename
+  40364	     32	    368	  40764	   9f3c	./Release/Bootloader_prj

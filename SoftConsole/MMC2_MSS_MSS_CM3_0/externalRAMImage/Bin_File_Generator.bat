@@ -1,0 +1,1 @@
+arm-none-eabi-objcopy.exe -O binary ./Debug/externalRAMImage "externalRAMImage.bin"

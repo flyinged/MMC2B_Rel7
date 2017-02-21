@@ -1,0 +1,62 @@
+# Microsemi Physical design constraints file
+
+# Version: v11.5 SP2 11.5.2.6
+
+# Design Name: MMC2 
+
+# Input Netlist Format: edif 
+
+# Family: SmartFusion , Die: A2F500M3G , Package: 256 FBGA , Speed grade: STD 
+
+# Date generated: Tue Jun 23 09:54:45 2015 
+
+
+
+#
+# User Groups
+#
+define_group -name UART_USB
+define_group -name I2C_1_SMBus
+define_group -name I2C_HSC5
+define_group -name I2C_FAN
+define_group -name UART_FP
+define_group -name UART_0_MODEM
+define_group -name UART_1_PADs
+define_group -name SPI_0_PADs
+define_group -name SPI_1_PADs
+define_group -name I2C_0_PADs
+define_group -name I2C_1_PADs
+
+#
+# IO banks setting
+#
+
+set_iobank Bank5 -vcci 3.30 -fixed no
+set_iobank Bank4 -vcci 3.30 -fixed no
+set_iobank Bank3 -vcci 3.30 -fixed yes
+set_iobank Bank2 -vcci 3.30 -fixed no
+set_iobank Bank1 -vcci 3.30 -fixed no
+set_iobank Bank0 -vcci 3.30 -fixed no
+
+#
+# I/O constraints
+#
+
+set_io i_fp_on            -iostd LVCMOS33 -pinname C15 -fixed yes
+set_io i_spe              -iostd LVCMOS33 -pinname F14 -fixed yes
+set_io o_v1_sw_off        -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -pinname F12 -fixed yes
+set_io o_v2_sw_off        -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -pinname D13 -fixed yes
+set_io o_v1_remote_enable -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -pinname D14 -fixed yes
+set_io o_v2_remote_enable -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -pinname E12 -fixed yes
+set_io mss_reset_fpga_b   -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -pinname E14 -fixed yes
+set_io spi_1_cs_mac_b     -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -pinname E3  -fixed yes
+set_io hsc5_alert_b       -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -pinname F3  -fixed yes
+set_io PHY_CLK            -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -pinname C14 -fixed yes
+
+set_io TMP_SCL  -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -RES_PULL None -SCHMITT_TRIGGER Off -SKEW Off -REGISTER No -OUT_LOAD 35 -pinname C16 -fixed yes
+set_io TMP_SDA  -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -RES_PULL None -SCHMITT_TRIGGER Off -SKEW Off -REGISTER No -OUT_LOAD 35 -pinname G4 -fixed yes
+set_io PWR_SCL  -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -RES_PULL None -SCHMITT_TRIGGER Off -SKEW Off -REGISTER No -OUT_LOAD 35 -pinname D15 -fixed yes
+set_io PWR_SDA  -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -RES_PULL None -SCHMITT_TRIGGER Off -SKEW Off -REGISTER No -OUT_LOAD 35 -pinname G5 -fixed yes
+set_io PM_SCL   -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -RES_PULL None -SCHMITT_TRIGGER Off -SKEW Off -REGISTER No -OUT_LOAD 35 -pinname E16 -fixed yes
+set_io PM_SDA   -iostd LVCMOS33 -OUT_DRIVE 12 -SLEW High -RES_PULL None -SCHMITT_TRIGGER Off -SKEW Off -REGISTER No -OUT_LOAD 35 -pinname E15 -fixed yes
+

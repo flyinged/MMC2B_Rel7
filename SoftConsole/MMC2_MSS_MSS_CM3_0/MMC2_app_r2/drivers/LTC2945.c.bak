@@ -1,0 +1,30 @@
+/*
+ * LTC2945.c
+ *
+ *  Created on: 17.07.2015
+ *      Author: malatesta_a
+ */
+
+#include "LTC2945.h"
+#include "core_i2c.h"
+
+uint32_t LTC2945_read_reg(void *i2c, uint8_t i2c_addr, uint8_t reg_addr, uint8_t nbytes) {
+	uint8_t rx_buf[3], tx_buf[1];
+
+	tx_buf[0] = reg_addr;
+	rx_buf[0] = 0x00; //reset rx buffer
+
+	if (nbytes == 0 || nbytes > 3) {
+		return 0x0;
+	}
+
+	core_i2c_doread( (i2c_instance_t*) i2c, i2c_addr, tx_buf, 1, rx_buf, nbytes, (const uint8_t *) "Read from Power monitor: " );
+
+	if (nbytes == 1) {
+		return ( rx_buf[0] );
+	} else if (nbytes == 2) {
+		return ( (rx_buf[0]<<4) | (rx_buf[1]>>4) );
+	} else {
+		return ( (rx_buf[0]<<16) | (rx_buf[1]<<8) | rx_buf[2] );
+	}
+}

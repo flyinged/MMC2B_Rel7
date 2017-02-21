@@ -1,0 +1,370 @@
+------------------------------------------------------------------------------
+--                       Paul Scherrer Institute (PSI)
+------------------------------------------------------------------------------
+-- File    : I2C_auto.vhd    
+-- Author  : Alessandro Malatesta, Section Diagnostic
+-- Version : $Revision: 1.0 $
+------------------------------------------------------------------------------
+-- Copyright© PSI, Section Diagnostic
+------------------------------------------------------------------------------
+-- Description:
+-- This module implements an APB peripheral that periodically reads from a 
+-- set of I2C targets. The results are made available on a register interface.
+-- The module integrates the I2C core developed by Goran Marinkovic.
+-- All the readings are repeated every 50M clock cycles. Extra commands can
+-- be issued by writing to the command register.
+--
+-- APB Memory map
+-- Read-only:
+--   0x00: T112 temperature sensor, MBU's front air outlet
+--   0x04: T112 temperature sensor, MBU's rear air outlet
+--   0x08: T112 temperature sensor, MBU's power board
+--   0x0C: T112 temperature sensor, MBU's air inlet
+--   0x10: TC74 temperature sensor, MBU's heatsink
+--   0x14: AD5321 DAC, MBU's heaters
+--   0x18: PCA9555, GPO current outputs
+--   0x1C: PCA9555, GPI current inputs
+--   0x20: RTC time
+--   0x24: RTC time
+--   0x28: ETC cfg 
+--   0x2C: ETC alarm cnt 
+--   0x30: ETC elapsed time cnt
+--   0x34: ETC event cnt
+--   0x38: GPO dir (settings)
+--   0x3C: GPI dir (settings)
+--   0x40: RTC ctrl
+--   
+-- Write-only:
+--   0x00: Command register: when this register is written, a command is 
+--         pushed to the input FIFO. If the FIFO is full, the command is ignored.
+--         Parameters are taken from the register as follows:
+--           bit 10 : READ-notWRITE
+--           bit 9:0: ROM index (same as read registers' addresses)
+--   0x04: For write commands the data to be written is read from this register.
+------------------------------------------------------------------------------
+
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+library synplify;
+use synplify.attributes.all;
+
+use work.APB3_regbank_pkg.all;
+
+--Core source: G\XFEL\14_Firmware\13_Prototype\Cavity_BPM\02_Design\BPM_FPGA\06_EDK\pcores\plb46_to_iic_mmap_v1_00_a\hdl\vhdl
+--library plb46_to_iic_mmap_v1_00_a;
+use work.mmap_package_multi.all;
+
+entity I2C_auto is
+port(
+    PCLK    : in  std_logic;
+    --APB3 SLAVE (register interface)
+    s_PRESETn : in  std_logic;
+    s_PSELx   : in  std_logic;
+    s_PENABLE : in  std_logic;
+    s_PWRITE  : in  std_logic;
+    s_PADDR   : in  std_logic_vector(31 downto 0); --byte addressing, 32bit registers
+    s_PWDATA  : in  std_logic_vector(31 downto 0);
+    s_PRDATA  : out std_logic_vector(31 downto 0) := X"00000000";
+    s_PREADY  : out std_logic := '1';
+    s_PSLVERR : out std_logic := '0';
+    --GPIO
+    gpi_data : out std_logic_vector(15 downto 0); 
+    gpo_data : in  std_logic_vector(15 downto 0);
+    --i2c
+    o_i2c_scl_tx : out std_logic_vector(1 downto 0);
+    i_i2c_scl_rx : in  std_logic_vector(1 downto 0);
+    o_i2c_sda_tx : out std_logic_vector(1 downto 0);
+    i_i2c_sda_rx : in  std_logic_vector(1 downto 0)
+);
+end entity I2C_auto;
+
+architecture rtl of I2C_auto is
+
+    attribute syn_radhardlevel : string;
+    attribute syn_radhardlevel of rtl : architecture is "tmr";
+
+    constant REGBANK_ADDR_W : natural := 4; --16registers
+    constant REGBANK_NREG : natural := 2**REGBANK_ADDR_W;
+    constant REGBANK_CMD_ADDR : std_logic_vector(REGBANK_ADDR_W+2-1 downto 0) := (others => '0');
+
+    signal fabric2cpu_reg : slv32_array(0 to 2**REGBANK_ADDR_W-1);
+    signal cpu2fabric_reg : slv32_array(0 to 2**REGBANK_ADDR_W-1);
+
+    signal rst, s_PRESETn_reg, regbank_write, cmd_reg_write : std_logic;
+    signal cmd_valid,   cmd_rnw   : std_logic;
+    signal cmd_valid_x, cmd_rnw_x : std_logic;
+    signal cmd_valid_a, cmd_rnw_a : std_logic;
+    signal fifo_empty, fifo_full, i_update, o_busy, o_periodic : std_logic;
+    signal rd_index : unsigned(9 downto 0);
+    signal cmd_index : std_logic_vector(9 downto 0);
+    signal cmd_index_a : std_logic_vector(9 downto 0);
+    signal cmd_index_x : std_logic_vector(9 downto 0);
+    signal rd_data : std_logic_vector(31 downto 0);
+    signal cmd_data, cmd_data_x, cmd_data_a : std_logic_vector(31 downto 0);
+
+    signal timer : natural; --let it be 32 bits
+    signal s : natural range 0 to 15; --4 bits 
+
+    constant N_TO_READ  : std_logic_vector(11 downto 0) := X"00E";
+begin
+
+--sync reset for speed
+sRST_REG_P : process(PCLK)
+begin 
+    if rising_edge(PCLK) then
+        s_PRESETn_reg <= s_PRESETn;
+    end if;
+end process;
+
+--slave register bank (for data exchange with CPU)
+REGBANK : APB3_Regbank
+generic map(
+    ADDR_W => REGBANK_ADDR_W --actual address is 2 bit more (byte)
+)
+port map(
+    --APB3
+    PCLK    => PCLK,
+    PRESETn => s_PRESETn_reg,
+    PSEL    => s_PSELx, 
+    PENABLE => s_PENABLE,
+    PWRITE  => s_PWRITE,
+    PADDR   => s_PADDR(REGBANK_ADDR_W+2-1 downto 0),
+    PWDATA  => s_PWDATA,
+    PRDATA  => s_PRDATA,
+    PREADY  => s_PREADY,
+    PSLVERR => s_PSLVERR,
+    --Register bank
+    rd_en_o     => open,
+    wr_en_o     => regbank_write,
+    regbank_in  => fabric2cpu_reg,
+    regbank_out => cpu2fabric_reg
+);
+
+--monitor writes to register 0
+COMMAND_HANDLER_P : process(PCLK)
+begin
+    if rising_edge(PCLK) then
+        if (s_PRESETn_reg = '0') then
+            cmd_valid_x     <= '0';
+            cmd_reg_write <= '0';
+        else
+            if s_PSELx = '1' and (s_PADDR(REGBANK_ADDR_W+2-1 downto 0) = REGBANK_CMD_ADDR) then
+                cmd_reg_write <= '1';
+            else
+                cmd_reg_write <= '0';
+            end if;
+
+            if (regbank_write = '1') and 
+               (cmd_reg_write = '1') and
+               (fifo_full = '0') then
+                cmd_valid_x <= '1';
+            else
+                cmd_valid_x <= '0';
+            end if;
+        end if;
+    end if;
+end process; --command_handler_p
+                
+cmd_rnw_x   <= cpu2fabric_reg(0)(10);
+cmd_index_x <= cpu2fabric_reg(0)(9 downto 0);
+cmd_data_x  <= cpu2fabric_reg(1);
+
+--wait timeout, start update, wait update to be over, read all registers, restart.
+AUTO_UPDATE_P : process(PCLK)
+begin
+    if rising_edge(PCLK) then
+        if (s_PRESETn_reg = '0') then
+            i_update    <= '0';
+            s           <= 0;
+            timer       <= 0;
+            cmd_valid_a <= '0';
+        else
+            case s is
+            --INITIALIZATION
+            when 0 =>
+                cmd_valid_a <= '0';
+                --wait for timer
+                if timer = 5000000 then --wait 1 second on start
+                    timer <= 0;
+                    s <= s+1;
+                else
+                    timer <= timer+1;
+                end if;
+            when 1 =>
+                --Set GPO direction to output (0x0000)
+                if fifo_full = '0' then
+                    cmd_valid_a <= '1'; --write to FIFO
+                    cmd_rnw_a   <= '0'; --write
+                    cmd_index_a <= ("00" & X"0E"); --GPO DIR
+                    cmd_data_a(15 downto 0)  <= X"0000";
+                    s <= s+1; --don't go on if operation is not done
+                end if;
+            when 2 =>
+                --Set GPI direction to input (0xFFFF)
+                if fifo_full = '0' then
+                    cmd_valid_a <= '1'; --write to FIFO
+                    cmd_rnw_a   <= '0'; --write
+                    cmd_index_a <= ("00" & X"0F"); --GPI DIR
+                    cmd_data_a(15 downto 0)  <= X"FFFF";
+                    s <= s+1; --don't go on if operation is not done
+                end if;
+            --MAIN CYCLE
+            when 3 =>
+                cmd_valid_a <= '0';
+                --wait for timer
+                if timer = 500000 then --wait 100 ms between update cycles
+                    timer <= 0;
+                    s <= s+1;
+                else
+                    timer <= timer+1;
+                end if;
+            when 4 =>
+                --wait for idle then start update
+                if o_busy = '0' then
+                    i_update <= '1';
+                    s <= s+1;
+                end if;
+            when 5 =>
+                --wait for update to start then reset start signal
+                if o_busy = '1' and o_periodic = '1' then
+                    i_update <= '0';
+                    s <= s+1;
+                end if;
+            when 6 =>
+                --wait for update to finish
+                if o_busy = '0' then
+                    rd_index <= (others => '0');
+                    s <= s+1;
+                end if;
+            when 7 =>
+                --update registers
+                if rd_index < unsigned(N_TO_READ(9 downto 0)) then --more registers to read
+                    if timer < 4 then --wait a bit
+                        timer <= timer+1;
+                    else --store data and increment counter
+                        timer <= 0;
+                        fabric2cpu_reg(to_integer(rd_index)) <= rd_data;
+                        rd_index <= rd_index+1;
+                    end if;
+                else --nothing left to read
+                    --s <= 0;
+                    s <= s+1;
+                end if; 
+            when 8 =>
+                if fifo_full = '0' then
+                    cmd_valid_a <= '1'; --write to FIFO
+                    cmd_rnw_a   <= '0'; --write
+                    cmd_index_a <= ("00" & X"06"); --GPO
+                    cmd_data_a(15 downto 8)  <= gpo_data( 7 downto 0); --SWAP BYTES
+                    cmd_data_a( 7 downto 0)  <= gpo_data(15 downto 8);
+                end if;
+                s <= 3; --if fifo full, command will be executed on next cycle
+
+            when others =>
+                i_update  <= '0';
+                s         <= 0;
+                timer     <= 0;
+                cmd_valid_a <= '0';
+            end case;
+        end if;
+    end if;
+end process; --auto_update_p
+
+gpi_data <= fabric2cpu_reg(7)(7 downto 0) & fabric2cpu_reg(7)(15 downto 8); --swap bytes
+
+FIFO_WRITE_ARB_P : process(PCLK)
+begin
+    if rising_edge(PCLK) then
+        --give priority to external commands
+        if cmd_valid_x = '1' then
+            cmd_valid <= cmd_valid_x;
+            cmd_rnw   <= cmd_rnw_x;
+            cmd_index <= cmd_index_x;
+            cmd_data  <= cmd_data_x;
+        else
+            cmd_valid <= cmd_valid_a;
+            cmd_rnw   <= cmd_rnw_a;
+            cmd_index <= cmd_index_a;
+            cmd_data  <= cmd_data_a;
+        end if;
+    end if;
+end process;
+
+--Core from Goran ------------------------------------------------------------------------
+--G\XFEL\14_Firmware\13_Prototype\Cavity_BPM\02_Design\BPM_FPGA\06_EDK\pcores\plb46_to_iic_mmap_v1_00_a\hdl\vhdl
+rst <= not s_PRESETn_reg;
+--------------------------
+mmap_inst: mmap
+generic map(
+    c_fpga    => "smartfusion",
+    c_num_to_read => N_TO_READ, --ML84: number of fields to read (periodic mode)
+    c_i2c_clk_div => 160, --ML84
+    c_storage =>  --ML84: maximum 32 entries
+      (
+         0 => (dev => X"48", reg_len => "01", reg => X"0000", data_len => "010", rep => '1'), -- 0 T112 temp sensor (Front Air outlet)
+         1 => (dev => X"49", reg_len => "01", reg => X"0000", data_len => "010", rep => '1'), -- 1 T112 temp sensor (Rear air outlet) 
+         2 => (dev => X"4A", reg_len => "01", reg => X"0000", data_len => "010", rep => '1'), -- 2 T112 temp sensor (Power Board)
+         3 => (dev => X"4B", reg_len => "01", reg => X"0000", data_len => "010", rep => '1'), -- 3 T112 temp sensor (Air Inlet)
+         4 => (dev => X"4D", reg_len => "01", reg => X"0000", data_len => "001", rep => '1'), -- 4 TC74 temp sensor (Heatsink)
+         5 => (dev => X"0D", reg_len => "00", reg => X"0000", data_len => "010", rep => '1'), -- 5 AD5321 DAC (Heater control)
+         --SECOND I2C BUS (i2c_start_id1)
+         6 => (dev => X"20", reg_len => "01", reg => X"0002", data_len => "010", rep => '1'), -- 6 GPO output, write 
+         7 => (dev => X"21", reg_len => "01", reg => X"0000", data_len => "010", rep => '1'), -- 7 GPI inputs, read
+         8 => (dev => X"51", reg_len => "01", reg => X"0003", data_len => "011", rep => '1'), -- 8 RTC time
+         9 => (dev => X"51", reg_len => "01", reg => X"0006", data_len => "100", rep => '1'), -- 9 RTC date
+        10 => (dev => X"6B", reg_len => "01", reg => X"0000", data_len => "001", rep => '1'), -- A ETC cfg
+        11 => (dev => X"6B", reg_len => "01", reg => X"0001", data_len => "100", rep => '1'), -- B ETC alarm cnt
+        12 => (dev => X"6B", reg_len => "01", reg => X"0005", data_len => "100", rep => '1'), -- C ETC et-count
+        13 => (dev => X"6B", reg_len => "01", reg => X"0009", data_len => "010", rep => '1'), -- D ETC event-count
+        --write only
+        14 => (dev => X"20", reg_len => "01", reg => X"0006", data_len => "010", rep => '0'), -- E GPO direction, write 0x00
+        15 => (dev => X"21", reg_len => "01", reg => X"0006", data_len => "010", rep => '0'), -- F GPI direction, write 0xFF
+        16 => (dev => X"51", reg_len => "01", reg => X"0000", data_len => "001", rep => '0')  -- 10 RTC control reg
+      )
+)
+port map(
+    i2c_start_id1               => "0000000110", --6
+    ------------------------------------------------------------------------
+    -- Debug interface
+    ------------------------------------------------------------------------
+    debug                       => open,
+    ------------------------------------------------------------------------
+    -- System
+    ------------------------------------------------------------------------
+    i_rst                       => rst,
+    i_clk                       => PCLK,
+    ------------------------------------------------------------------------
+    -- Data Interface
+    ------------------------------------------------------------------------
+    i_trig                      => cmd_valid,     --write to input FIFO
+    i_irq                       => "0000",   --irq loaded into FIFO (not used here)
+    i_rw                        => cmd_rnw,      --read/write#
+    i_wr_index                  => cmd_index, --ROM entry
+    i_wr_data                   => cmd_data,  --data to be written
+    o_wr_empty                  => fifo_empty, --input fifo status
+    o_wr_full                   => fifo_full,  --input fifo status
+    i_rd_index                  => std_logic_vector(rd_index), --RAM read address
+    o_rd_data                   => rd_data,  --RAM read data
+    ------------------------------------------------------------------------
+    -- Interrupt Interface
+    ------------------------------------------------------------------------
+    o_int                       => open, --not used
+    ------------------------------------------------------------------------
+    -- Periodic read Interface
+    ------------------------------------------------------------------------
+    i_update                    => i_update, --start update
+    o_busy                      => o_busy,
+    o_periodic                  => o_periodic,
+    ------------------------------------------------------------------------
+    -- Serial link interface
+    ------------------------------------------------------------------------
+    o_i2c_scl_tx                => o_i2c_scl_tx,
+    i_i2c_scl_rx                => i_i2c_scl_rx,
+    o_i2c_sda_tx                => o_i2c_sda_tx,
+    i_i2c_sda_rx                => i_i2c_sda_rx
+   );
+
+end architecture rtl; --of I2C_auto

@@ -1,0 +1,2 @@
+   text	   data	    bss	    dec	    hex	filename
+ 137124	     88	  45224	 182436	  2c8a4	./Release_PSRAM/MMC2_app_r2

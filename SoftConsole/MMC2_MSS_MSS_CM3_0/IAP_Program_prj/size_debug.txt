@@ -1,0 +1,2 @@
+   text	   data	    bss	    dec	    hex	filename
+  36860	     40	  12892	  49792	   c280	./Debug/IAP_Program_prj

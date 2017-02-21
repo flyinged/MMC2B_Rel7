@@ -1,0 +1,322 @@
+/*******************************************************************************
+ *  PSI 2015
+ *
+ *  Bootloader for MMC2 Rev-B
+ *
+ *
+ * Author : Alessandro Malatesta
+ *
+ * CHANGE LOG
+ * 0.0 - Base version derived from Bootloader_prj in Microsemi's Application note AC362
+ * 0.1 - Integrated FLASH loader into Bootloader
+ * 0.2 - Integrated IAP into Bootloader
+ * 0.3 - Removed reset after flash-load completion
+ * 0.4 - Added code to execute IAP from eSRAM
+ *
+ *******************************************************************************/
+
+/*************************************************** ***********************/
+/* Standard Includes */
+/**************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/**************************************************************************/
+/* Firmware Includes */
+/**************************************************************************/
+
+#include "a2fxxxm3.h"
+#include "mss_uart.h"
+#include "mss_watchdog.h"
+#include "mss_timer.h"
+#include "boot_config.h"
+
+#include "s25fl128s.h" //ML84 added: SPI flash
+#include "uart_utility.h" //ML84 added: SPI flash
+
+/**************************************************************************/
+/* RTOS Includes */
+/**************************************************************************/
+
+/**************************************************************************/
+/*Extern Declarations*/
+/**************************************************************************/
+
+void bx_user_code_esram(void);
+void bx_loader_envm(void); //ML84 added
+//void bx_3rd_eNVM_Image(void);
+
+//#define VECTOR_TABLE_ADDR_3RD_IMAGE 0x00020000
+//#define VECTOR_TABLE_ADDR_2ND_IMAGE 0x20000000
+
+/*
+ * Soft reset control register (default 0x0003FFF8)
+ * PADRESETENABLE(19): When 1 enables external reset (DEF 0)
+ * F2MRESETENABLE(18): When 1 fabric can reset MSS via F2M_RESET_N (DEF 0)
+ * FPGA_SR(17)       : When 1 reset to fabric M2F_RESET_N is ASSERTED (DEF 1)
+ * EXT_SR(16)        : when 1 keeps MSS_RESET_N asserted after startup (DEF 1)
+ * IAP_SR(15) * GPIO_SR(14) * ACE_SR(13) * I2C1_SR(12)  : (DEF 1111)
+ * I2C_0_SR(11) * SPI1_SR(10) * SPI0_SR(9) * UART1_SR(8): (DEF 1111)
+ * UART0_SR(7) * TIMER_SR(6) * PDMA_SR(5) * MAC_SR(4)   : (DEF 1111)
+ * EMC_SR(3) * ESRAM1_SR(2) * ESRAM0_SR(1) * ENVM_SR(0) : (DEF 1000)
+ */
+#define SOFT_RST_CR 0xE0042030
+
+/******************* EMC ***********************/
+//CS_FE(21)       : 0=CS asserted on rising edge of clock, 1=CS asserted on falling edge of clk
+//WEN/BEN#(20)    : 0=byte enable active for reads & writes, 1=byte enable active only for writes
+//RW_POL(19)      : polarity of RW_N. 0=high-is-read 1=high-is-write
+//PIPE_WR(18)     : pipelined write
+//PIPE_RD(17)     : pipelined read
+//IDD(16:15)      : inter-device delay
+//WR_LAT(14:11)   : write latency
+//RD_LAT_NXT(10:7): read latency, following cycles in burst
+//RD_LAT_1ST(6:3) : read latency, 1st cycle
+//PORT_SZ(2)      : 0=8-bit, 1=16-bit
+//MEM_TYPE(1:0)   : 00=none, 01=ASRAM, 10=SSRAM, 11=NOR FLASH
+#define EMC_PRAM_SETTINGS  0x0020BBBD; //PSRAM type=ASRAM, 16bit, RD_LAT_1=7, RD_LAT_N=7, WR_LAT=7, IDD=1, NO PIPE, CS on falling edge
+#define EMC_FLASH_SETTINGS 0x0020DDDF; //FLASH type=FLASH, 16bit, RD_LAT_1=11, RD_LAT_N=11,  WR_LAT=11, IDD=1, NO PIPE, CS on rising edge
+
+
+//BASE ADDRESSES FOR SYSTEM MEMORIES
+#define ESRAM_BASE_ADDR    0x20000000u
+#define ENVM_BASE_ADDR     0x60000000u
+#define EMCRAM_BASE_ADDR   0x70000000u
+#define EMCFLASH_BASE_ADDR 0x74000000u
+
+//In-Application Programming Image
+#define IAP_ENVM_BASE_ADDR   (ENVM_BASE_ADDR+0x10000) //base address in eNVM (only for storage)
+#define IAP_IMAGE_SIZE_BYTES 0x10000 //64KB
+#define IAP_SPI_ADDR_REG     (ESRAM_BASE_ADDR+IAP_IMAGE_SIZE_BYTES-4) //address in eSRAM where IAP image address is stored
+
+//System Memory map
+//0x60000000 (64K): Bootloader
+//0x60010000 (64K): IAP
+//0x70000000 (1MB): App Golden Image
+
+//SPI addressses
+//FW images (1st 2MB of SPI)
+#define FW_IMAGE_SIZE_BYTES 0x100000 //Fabric=452 kB, eNVM client = 256 kB => 708 kB (round to 1MB)
+#define FW_GOLDEN_SPI_ADDR  0x000000
+#define FW_IMG1_SPI_ADDR    0x100000 //1*FW_IMAGE_SIZE_BYTES
+//SW images (rest of SPI)
+#define APP_IMAGE_SIZE_BYTES 0x00100000u //1MB
+#define APP_GOLDEN_SPI_ADDR (2*APP_IMAGE_SIZE_BYTES) //1st 2MB used for FW images. Start from 3rd.
+#define APP_1_SPI_ADDR      (APP_GOLDEN_SPI_ADDR+APP_IMAGE_SIZE_BYTES)
+#define APP_2_SPI_ADDR      (APP_1_SPI_ADDR+APP_IMAGE_SIZE_BYTES)
+#define APP_3_SPI_ADDR      (APP_2_SPI_ADDR+APP_IMAGE_SIZE_BYTES)
+#define APP_4_SPI_ADDR      (APP_3_SPI_ADDR+APP_IMAGE_SIZE_BYTES)
+//#define APP_N_SPI_ADDR  1*APP_IMAGE_SIZE_BYTES //32 MB available
+
+volatile uint16_t boot_timer   = 0;
+volatile uint32_t tick_counter = 0;
+const    uint32_t TOUT         = 60*0x64; //USER INPUT TIMEOUT. 0x64 = 1s when system tick = 1ms
+uint32_t fabric_image_spi_offset;
+
+
+//ML84 added
+void copy_memory(uint32_t from, uint32_t to, uint32_t nbytes)
+{
+    unsigned long *exeDestAddr, *exeSrcAddr, ii;
+
+    //program shall be started from local RAM: copy the vector table
+    exeSrcAddr  = (unsigned long *)from; //source
+    exeDestAddr = (unsigned long *)to;
+
+    while (nbytes % 4) nbytes++; //increment until multiple of 4
+
+    for (ii=0; ii<(nbytes/4); ii++ ) { //copy vector table to local RAM
+       *exeDestAddr++ = *exeSrcAddr++;
+    }
+}
+
+//ML84 added
+void spi_flash_to_esram(uint32_t srcAddr, uint32_t size)
+{
+    uint8_t img_buffer[1024];
+    unsigned int ii=0, jj =0;
+    unsigned long length = 0;
+    //unsigned long *exeDestAddr, *exeSrcAddr;
+    unsigned char *destAddr = (unsigned char *)EMCRAM_BASE_ADDR; //destination: external PSRAM
+
+    //init SPI flash controller
+    FLASH_init();
+
+    //Init EMC controller
+    *(volatile uint32_t*)0xE0042040 = EMC_PRAM_SETTINGS;
+    *(volatile uint32_t*)0xE0042044 = EMC_FLASH_SETTINGS;
+
+    ii = 0; //buffer offset
+    jj = 0; //current offset in SPI flash
+    while(size > 0) {
+        //read 1KB sized chunks
+        if (size >= 1024) {
+            length = 1024;
+        } else {
+            length = size;
+        }
+        //fill buffer
+        FLASH_read(srcAddr + jj, img_buffer, length);
+
+        //copy from buffer to external PSRAM
+        for(ii=0; ii<length; ii++) {
+            *destAddr++ = img_buffer[ii];
+        }
+        jj += length; //update SPI flash read address
+        size -= length; //update remaining data counter
+    }
+
+    //program shall be started from local RAM: copy the vector table
+    copy_memory(EMCRAM_BASE_ADDR, ESRAM_BASE_ADDR, 664);
+//    exeSrcAddr  = (unsigned long *)EMCRAM_BASE_ADDR; //source
+//    exeDestAddr = (unsigned long *)ESRAM_BASE_ADDR;
+//    for (ii=0; ii<166; ii++ ) { //copy vector table to local RAM
+//       *exeDestAddr++ = *exeSrcAddr++;
+//    }
+
+    //Vector table offset register (vector table now at eSRAM base address)
+    *(volatile unsigned long *)0xE000ED08 = ESRAM_BASE_ADDR;
+}
+
+
+size_t UART_Polled_Rx ( mss_uart_instance_t * this_uart, uint8_t * rx_buff, size_t buff_size )
+{
+    size_t rx_size = 0U;
+    uint16_t ii, now = boot_timer;
+
+//    ASSERT( (this_uart == &g_mss_uart0) || (this_uart == &g_mss_uart1) );
+    while( rx_size < buff_size )
+    {
+       while ( this_uart->hw_reg_bit->LSR_DR != 0U  )
+       {
+           rx_buff[rx_size] = this_uart->hw_reg->RBR;
+           ++rx_size;
+       }
+       if(boot_timer >= BOOT_TIMEOUT_SEC) { //(boot_time_out) ML84 changed
+    	   break;
+       } else if (now != boot_timer) {
+           now = boot_timer;
+           for (ii = 0; ii<(BOOT_TIMEOUT_SEC-boot_timer); ii++) {
+               MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)".", 1);
+           }
+           for (; ii<BOOT_TIMEOUT_SEC; ii++) {
+               MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)" ", 1);
+           }
+           MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"\r", 1);
+       }
+
+    }
+
+    return rx_size;
+}
+
+
+void Timer1_IRQHandler(void)
+{
+	boot_timer++;
+	MSS_TIM1_clear_irq();
+	//MSS_TIM1_disable_irq();
+
+}
+
+__attribute__((__interrupt__)) void SysTick_Handler(void)
+{
+    tick_counter++;
+}
+
+void flash_loader();
+void main_iap();
+
+/****************************************************************/
+/****************************************************************/
+int main() //FIXME: add integrity checks on files
+{
+    uint8_t rx_buff[1], *cptr;
+    uint16_t now;
+    uint32_t ii;
+
+    /* Disable the Watch Dog Timer */
+    MSS_WD_disable( );
+
+    ii = *(volatile uint32_t*)(SOFT_RST_CR);
+    //Release drive on MSS_RESET_N, enable pin as reset input
+    *(volatile uint32_t*)(SOFT_RST_CR) = ( (ii & 0xFFF0FFFF) ); //reset pad disabled, release driven resets
+
+	/* Initialization all necessary hardware components */
+    MSS_UART_init( &g_mss_uart0,MSS_UART_57600_BAUD,MSS_UART_DATA_8_BITS | MSS_UART_NO_PARITY | MSS_UART_ONE_STOP_BIT );
+  	MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"\n\n\r#### MMC2-B Bootloader v0.4####\n\r",sizeof("\n\n\r#### MMC2-B Bootloader vx.x####\n\r"));
+
+  	MSS_TIM1_init(MSS_TIMER_PERIODIC_MODE);
+  	MSS_TIM1_load_immediate( (uint32_t)APB0_CLOCK_HZ ); //1 second
+  	MSS_TIM1_enable_irq();
+
+  	/* Init tick counter (periodical interrupts, used by I2C driver and sleep() function)*/
+  	NVIC_SetPriority(SysTick_IRQn, 0xFFu); /* Lowest possible priority */
+  	SysTick_Config(100000000 / 100); //every 10 ms
+
+  	//TODO write Boot info on OLED
+
+  	while(1)
+  	{
+  	    MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"\n\rPlease Select an option\n\r",                      sizeof("\n\rPlease Select an option\n\r"));
+        MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"1. FLASH memory loader (eNVM)\n\r",                    sizeof("1. FLASH memory loader (eNVM)\n\r"));
+        MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"2. IAP Programmer (eNVM)\n\r",                         sizeof("2. IAP Programmer (eNVM)\n\r"));
+        MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"3. Application golden image (SPI flash) - DEFAULT\n\r",sizeof("3. Application golden image (SPI flash) - DEFAULT\n\r"));
+        //MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"4. Debug: read memories\n\r",sizeof("4. Debug: read memories\n\r"));
+
+  	    //wait for timeout or user selection
+  	    now = boot_timer;
+  	    MSS_TIM1_start();
+  		while( (UART_Polled_Rx( &g_mss_uart0, rx_buff, 1 ) == 0) && (boot_timer < BOOT_TIMEOUT_SEC)); //timeout defined in boot_config.h
+        MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"\n", 1);
+  	    MSS_TIM1_stop();
+
+  	    //if timed-out, select main application
+  		if(boot_timer >= BOOT_TIMEOUT_SEC)
+  		{
+  	  	    MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"Timeout occurred: Booting main application\n\r",sizeof("Timeout occurred: Booting main application\n\r"));
+  	  	    rx_buff[0] = '3';
+  		}
+
+  		/******************** CHOICES ********************/
+	    if(rx_buff[0] == '1') { //FLASH loader
+	        //ML84 v0.1 flash loader integrated in bootloader
+	        flash_loader();
+
+	    } else if(rx_buff[0] == '2') { //IAP
+	        //copy IAP application from eNVM to eSRAM
+	        copy_memory(IAP_ENVM_BASE_ADDR, ESRAM_BASE_ADDR, IAP_IMAGE_SIZE_BYTES);
+	        //pass custom value on last eSRAM double-word
+            //*(volatile uint32_t*)(IAP_SPI_ADDR_REG) = FW_GOLDEN_SPI_ADDR;
+            *(volatile uint32_t*)(IAP_SPI_ADDR_REG) = FW_IMG1_SPI_ADDR;
+	        //branch
+	        bx_user_code_esram();
+
+	    } else if(rx_buff[0] == '3') { //Main application, golden image (SPI flash => EMC PSRAM)
+
+            MSS_UART_polled_tx(&g_mss_uart0,(uint8_t *)"\nCopying main application from SPI flash to external RAM... ",sizeof("\nCopying main application from SPI flash to external RAM... "));
+
+            spi_flash_to_esram(APP_GOLDEN_SPI_ADDR, APP_IMAGE_SIZE_BYTES);
+
+            while(MSS_UART_tx_complete(&g_mss_uart0) == 0);
+
+            bx_user_code_esram();
+
+//        } else if(rx_buff[0] == '4') { //Main application, golden image (SPI flash => EMC PSRAM)
+//            uint8_t text[] = "0x00000000 \0";
+//            for (ii=0; ii<32; ii++) {
+//                buf = *((unsigned long*)(0x60008000+ii));
+//                uint_to_hexstr(buf,text+2,8);
+//                MSS_UART_polled_tx(&g_mss_uart0, text, 11);
+//                MSS_UART_polled_tx(&g_mss_uart0, (uint8_t *) "\n\r", 2);
+//            }
+//            key2continue("\n\rPress any key\n\r");
+//
+	    } else {
+            key2continue("\n\rIncorrect option. Press any key to continue\n\r");
+	  	    boot_timer = 0;
+	    }
+  	}
+    return 0;
+}
