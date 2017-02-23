@@ -162,6 +162,7 @@
  * 5.19.6 - Modified command to reset/re-initialize I2C. Added code for I2C self check. Added command to enable/disable self check.
  * 5.19.7 - Automatic reinitialization of I2C driver whenever GPAC is removed (SPE 1->0)
  * 5.20   - Updated TFTP help messages
+ * 5.21   - Changed addressing mode for I2C slave reads: pointer to TX buffer is handled directly
  */
 
 #include <string.h>
@@ -194,7 +195,7 @@
 #include "ethernet.h"
 
 /* VERSIONS */
-const uint8_t sw_version[]   = "5.20\n\r";
+const uint8_t sw_version[]   = "5.21\n\r";
 uint8_t       fw_version[]   = "000\n\r\0";
 uint8_t       fw_version_x[] = "105\n\r\0"; //expected FW version
 
@@ -206,8 +207,11 @@ uint8_t  power_fail_alarm = 0;
 uint32_t power_fail_time;
 
 /* i2c slave */
-volatile uint8_t i2c_slave_tx_buf[1024];
-uint8_t i2c_slave_rx_buf[512];
+#define I2C_SLAVE_TXBUF_SIZE 512+4
+#define I2C_SLAVE_RXBUF_SIZE 512
+
+volatile uint8_t i2c_slave_tx_buf[I2C_SLAVE_TXBUF_SIZE];
+uint8_t i2c_slave_rx_buf[I2C_SLAVE_RXBUF_SIZE];
 
 /* other global variables */
 uint16_t i2c_input_old, i2c_input_new, i2c_output_old, i2c_output_new; //I2C GPIOs
@@ -688,7 +692,7 @@ int main()
     oled_update_time = tick_counter;
 
     /* initalize I2C TX BUFFER */
-    for (rval = 0; rval<1024; rval++) {
+    for (rval = 0; rval<I2C_SLAVE_TXBUF_SIZE; rval++) {
         i2c_slave_tx_buf[rval] = (uint8_t)rval;
     }
 
@@ -758,9 +762,9 @@ int main()
                 /* reinitialize the I2C driver */
                 sleep(100);
                 MSS_I2C_init( &g_mss_i2c0, I2C_GPAC_S_ADDR, MSS_I2C_PCLK_DIV_256); //100M/256 = 390kHz (max 400)
-                MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) i2c_slave_tx_buf, sizeof(i2c_slave_tx_buf) );
-                MSS_I2C_set_slave_rx_buffer( &g_mss_i2c0, i2c_slave_rx_buf, sizeof(i2c_slave_rx_buf) );
-                MSS_I2C_set_slave_mem_offset_length( &g_mss_i2c0, 2 );
+                MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) i2c_slave_tx_buf, I2C_SLAVE_TXBUF_SIZE );
+                MSS_I2C_set_slave_rx_buffer( &g_mss_i2c0, i2c_slave_rx_buf, I2C_SLAVE_RXBUF_SIZE );
+                MSS_I2C_set_slave_mem_offset_length( &g_mss_i2c0, 0 ); //changed: tx buf pointer handled by ISR
                 MSS_I2C_register_write_handler( &g_mss_i2c0, i2c_slave_write_handler );
                 MSS_I2C_clear_gca( &g_mss_i2c0 );
                 MSS_I2C_enable_slave( &g_mss_i2c0 );
@@ -1005,7 +1009,6 @@ int main()
         core_i2c_dowrite(&g_core_i2c_pm, I2C_GPO_SER_ADDR, tx_buf, 3, (uint8_t*) "Set GPO");
 
         //Execute Write to SDcard command
-
         if (i2c_s_sdwrite != 0 && i2c_s_status == 0x00) {
             MSS_UART_polled_tx_string(&g_mss_uart0, (uint8_t*) "Writing SD card.\n\r    Address = ");
             memcpy(text_buf, "0x00000000\n\r\0", 13);
@@ -1079,7 +1082,7 @@ void poll_uart(void) {
 
             memcpy(txt,  "00\0", 3);
             memcpy(txt2, "  0000:  \0", 10);
-		    for(i=0; i<0x204; i++) {
+		    for(i=0; i<I2C_SLAVE_TXBUF_SIZE; i++) {
 		        if((i%16) == 0) {
 		            uint_to_hexstr(i, txt2+2, 4);
 	                MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) txt2);
@@ -1361,11 +1364,13 @@ void poll_uart(void) {
 		    MSS_I2C_init( &g_mss_i2c0, I2C_GPAC_S_ADDR, MSS_I2C_PCLK_DIV_256); //100M/256 = 390kHz (max 400)
 		    /* Specify the transmit buffer containing the data that will be
 		     * returned to the master during read and write-read transactions. */
-		    MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) i2c_slave_tx_buf, sizeof(i2c_slave_tx_buf) );
+		    MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) i2c_slave_tx_buf, I2C_SLAVE_TXBUF_SIZE );
 		    /* Specify the buffer used to store the data written by the I2C master. */
-		    MSS_I2C_set_slave_rx_buffer( &g_mss_i2c0, i2c_slave_rx_buf, sizeof(i2c_slave_rx_buf) );
+		    MSS_I2C_set_slave_rx_buffer( &g_mss_i2c0, i2c_slave_rx_buf, I2C_SLAVE_RXBUF_SIZE );
+
 		    /* expect 2 bytes indicating the offset on i2c_slave_tx_buf (when external master reads from slave) */
-		    MSS_I2C_set_slave_mem_offset_length( &g_mss_i2c0, 2 );
+		    MSS_I2C_set_slave_mem_offset_length( &g_mss_i2c0, 0 ); //changed: tx buf pointer handled by ISR
+
 		    /* register handler for written data */
 		    MSS_I2C_register_write_handler( &g_mss_i2c0, i2c_slave_write_handler );
 		    /* Disable recognition of the General Call Address */
@@ -1953,14 +1958,33 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
     uint8_t txt2[] = " 00\0";
     uint8_t flash_buf[16], i;
     uint32_t reg32 = 0, flash_addr = 0;
+    uint16_t a16 = 0;
 
     i2c_s_timer = tick_counter;
     i2c_s_access = 1;
 
     MSS_WD_reload();
 
-    //16 bit transactions: one data unit is made of the command code (1B) followed by 1 data byte
-    if (size != 2) {
+
+    //GPAC2: 2-byte write transactions (either 1B command + 1B data, or 2B data)
+    //GPAC3: 4-byte transaction, fixed format: 2B address + 2B data
+    if (size == 4) {
+        /* Code for GPAC3 here
+         * 1.
+         */
+        a16 = (data[0]<<8) | data[1];
+
+        dbg_print("Received 16bit address: 0x");
+        dbg_printnum(a16, 2);
+        dbg_print("\n\r");
+
+        //set pointer to TX buffer according to specified address
+        if (a16 < I2C_SLAVE_TXBUF_SIZE) {
+            MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (i2c_slave_tx_buf+a16), (I2C_SLAVE_TXBUF_SIZE-a16) );
+        }
+
+        return MSS_I2C_REENABLE_SLAVE_RX;
+    } else if (size != 2) {
         dbg_print("\n\rI2C_SLAVE:ERROR: rx size is ");
         dbg_printnum_d(size, 2);
         dbg_print("\n\r                 rx data is ");
@@ -1972,24 +1996,28 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
         return MSS_I2C_REENABLE_SLAVE_RX;
     }
 
-    /* Reset ISR FSM on timeout (too long in a state != 0) */
-//    if (i2c_s_tout && i2c_s_rst_en) {
-//        //dbg_print("I2C_SLAVE:RESET\n\r");
-//        i2c_s_rst_en = 0;
-//        i2c_s_status = 0;
-//    } else if (i2c_s_tout == 0) {
-//        i2c_s_rst_en = 1;
-//    }
-
     //Start of command with code n is the following sequence: n,'C'; n,'M'; n,'D'
+    //WARNING: write/read operations could in principle trigger commands. Anyway all commands start with 0x**43.
+    //         Thus as long as ODD addresses are never used, no command will ever be triggered.
     switch (i2c_s_status) {
         case 0x00: //IDLE
             if ((data[1] == 'C') && (data[0] <= MAX_CMD)) { //command starts with the byte sequence "CMD" (0x43, 0x4D, 0x44)
                 i2c_s_cmd = data[0];
                 i2c_s_status++;
             } else {
-                //NO ERROR MESSAGE: can receive the address for a read transaction
-                //MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "I2C_SLAVE:GOT READ REQUEST\n\r");
+                //receive the address for a read transaction
+                a16 = (data[0]<<8) | data[1];
+
+                dbg_print("Received 16bit address: 0x");
+                dbg_printnum(a16, 2);
+                dbg_print("\n\r");
+
+                //set pointer to TX buffer according to specified address
+                if (a16 < I2C_SLAVE_TXBUF_SIZE) {
+                    MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (i2c_slave_tx_buf+a16), (I2C_SLAVE_TXBUF_SIZE-a16) );
+                } else {
+                    a16 = 0;
+                }
             }
             break;
         /********************************** RECEIVING START OF COMMAND ****************************************/
@@ -2025,14 +2053,12 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         flash_buf[i] = 0xAA;
                     }
                     //erase old data. Write is made once at the end
-                    FLASH_erase_sector(flash_addr);
+                    FLASH_erase_sector(flash_addr); //TODO is it needed?
                     //update register map
                     i2c_slave_tx_buf[0x1F8+2*i2c_s_cmd]   = 0xAA;
                     i2c_slave_tx_buf[0x1F8+2*i2c_s_cmd+1] = 0xAA;
                     //go on
                     i2c_s_status++;
-//                } else if (i2c_s_cmd == 7) { //write SD card
-//                    i2c_s_status++; //receive address
                 } else {
                     switch (i2c_s_cmd){
                         case 4:
@@ -2082,8 +2108,6 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                             i2c_s_status = 0x00;
                             return MSS_I2C_REENABLE_SLAVE_RX;
                     }
-//                    i2c_s_status = 0x00;
-//                    return MSS_I2C_REENABLE_SLAVE_RX;
                 }
             } else {
                 i2c_s_status = 0;
@@ -2252,7 +2276,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                 i2c_s_len--; //remaining RX data
                 i2c_s_dcnt++; //received data
 
-                //Write to EEPROM or t SD card
+                //Write to EEPROM or to SD card
                 //store data in buffer
                 i2c_s_buf[i2c_s_cnt++] = data[1];
 
@@ -2403,11 +2427,6 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                 uint_to_hexstr(expected_crc, txt+2, 8);
                 MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) txt);
 
-                //reg32 = compute_spi_crc(i2c_s_cmd); //computed bytewise while receiving
-//                MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "\n\rComputed CRC = ");
-//                uint_to_hexstr(crc, txt+2, 8);
-//                MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) txt);
-
                 //check CRC
                 if (expected_crc == i2c_s_crc) {
                     //set status to "crc check ok"
@@ -2487,12 +2506,14 @@ void config_i2c(void) {
 
     /* Specify the transmit buffer containing the data that will be
      * returned to the master during read and write-read transactions. */
-    MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) i2c_slave_tx_buf, sizeof(i2c_slave_tx_buf) );
+    MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) i2c_slave_tx_buf, I2C_SLAVE_TXBUF_SIZE );
 
     /* Specify the buffer used to store the data written by the I2C master. */
-    MSS_I2C_set_slave_rx_buffer( &g_mss_i2c0, i2c_slave_rx_buf, sizeof(i2c_slave_rx_buf) );
+    MSS_I2C_set_slave_rx_buffer( &g_mss_i2c0, i2c_slave_rx_buf, I2C_SLAVE_RXBUF_SIZE );
+
     /* expect 2 bytes indicating the offset on i2c_slave_tx_buf (when external master reads from slave) */
-    MSS_I2C_set_slave_mem_offset_length( &g_mss_i2c0, 2 );
+    MSS_I2C_set_slave_mem_offset_length( &g_mss_i2c0, 0 ); //changed: tx buf pointer handled by ISR
+
     /* register handler for written data */
     MSS_I2C_register_write_handler( &g_mss_i2c0, i2c_slave_write_handler );
     /* Disable recognition of the General Call Address */
