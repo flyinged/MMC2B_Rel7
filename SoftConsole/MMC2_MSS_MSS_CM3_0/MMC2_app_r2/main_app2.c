@@ -163,6 +163,9 @@
  * 5.19.7 - Automatic reinitialization of I2C driver whenever GPAC is removed (SPE 1->0)
  * 5.20   - Updated TFTP help messages
  * 5.21   - Changed addressing mode for I2C slave reads: pointer to TX buffer is handled directly
+ * 5.21.1 - Added flash read and write buffers
+ * 5.21.2 - Added commands to display buffers
+ * 5.21.3 - Set up framework for GPAC3 commands
  */
 
 #include <string.h>
@@ -195,7 +198,7 @@
 #include "ethernet.h"
 
 /* VERSIONS */
-const uint8_t sw_version[]   = "5.21\n\r";
+const uint8_t sw_version[]   = "5.21.3\n\r";
 uint8_t       fw_version[]   = "000\n\r\0";
 uint8_t       fw_version_x[] = "105\n\r\0"; //expected FW version
 
@@ -207,8 +210,18 @@ uint8_t  power_fail_alarm = 0;
 uint32_t power_fail_time;
 
 /* i2c slave */
-#define I2C_SLAVE_TXBUF_SIZE 512+4
+#define I2C_SLAVE_TXBUF_SIZE 512
 #define I2C_SLAVE_RXBUF_SIZE 512
+
+#define FLASH_BUF_LEN    256
+#define CMD_BUF_LEN      16
+#define CMD_BUF_START    0x0800
+#define FLASH_WBUF_START 0x1000
+#define FLASH_RBUF_START (FLASH_WBUF_START+FLASH_BUF_LEN)
+
+uint8_t cmd_buf[CMD_BUF_LEN];
+uint8_t flash_rbuf[FLASH_BUF_LEN];
+uint8_t flash_wbuf[FLASH_BUF_LEN];
 
 volatile uint8_t i2c_slave_tx_buf[I2C_SLAVE_TXBUF_SIZE];
 uint8_t i2c_slave_rx_buf[I2C_SLAVE_RXBUF_SIZE];
@@ -343,7 +356,7 @@ int main()
 
     //FORCE SHUTDOWN
     rval = HW_get_32bit_reg(CPU2FABRIC_REG2);
-    if ((rval & C2F_REG_PWR_CYC) == 0xABCD0000) { //TODO: when shutdown is bypassed, no write access should be made to I2C eeprom
+    if ((rval & C2F_REG_PWR_CYC) == 0xABCD0000) { //_TODO: when shutdown is bypassed, no write access should be made to I2C eeprom
         dbg_print("Bypassing shutdown.\n\r");
         HW_set_32bit_reg(CPU2FABRIC_REG2, (rval & 0x0000FFFF));
     } else {
@@ -1056,7 +1069,6 @@ void poll_uart(void) {
 	size_t  rx_size;
 	uint8_t uart_rx_buf[1];
 	uint8_t txt[16], txt2[16];
-	//uint32_t reg32, *ptr32; float f;
 	uint32_t i, j;
 	uint8_t i2c_rw, i2c_id, i2c_addr, i2c_n, tx_buf[5], rx_buf[4], *ptr8;
 
@@ -1129,6 +1141,27 @@ void poll_uart(void) {
                 MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "Bad index. Valid values: 0 to 3\n\r");
             }
             break;
+        case '3': //display command buffer
+            dbg_print("\n\rCommand buffer\n\r");
+            for (i=0; i<CMD_BUF_LEN; i++) {
+                if ((i%4) == 0) dbg_print("\n\r");
+                dbg_printnum(cmd_buf[i],2); dbg_print(" ");
+            }
+            dbg_print("\n\r");
+            break;
+        case '4': //display flash buffers
+            dbg_print("\n\rRead buffer\n\r");
+            for (i=0; i<FLASH_BUF_LEN; i++) {
+                if ((i%8) == 0) dbg_print("\n\r");
+                dbg_printnum(flash_rbuf[i],2); dbg_print(" ");
+            }
+            dbg_print("\n\rWrite buffer\n\r");
+            for (i=0; i<FLASH_BUF_LEN; i++) {
+                if ((i%8) == 0) dbg_print("\n\r");
+                dbg_printnum(flash_wbuf[i],2); dbg_print(" ");
+            }
+            dbg_print("\n\r");
+            break;
 #if 0
         case '3': //corrupt programming file (to test CRC checks)
             i = hex_from_console((uint8_t*)"CORRUPT SPI FLASH: enter SPI file index: ");
@@ -1139,7 +1172,7 @@ void poll_uart(void) {
                 MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "Error: file index not valid\n\r");
             }
             break;
-#endif
+
         /*****************************************************************************/
         case '3': //read I2C_FAN debug info
             i = HW_get_32bit_reg(MSS_I2C_CONTROLLER_0);
@@ -1249,7 +1282,7 @@ void poll_uart(void) {
                 dbg_print("\n\n\r");
             }
             break;
-
+#endif
         case '6': //access APB
             dbg_print("APB access\n\r");
             i2c_rw = hex_from_console("1=read, 2=write: ",1);
@@ -1580,10 +1613,12 @@ void poll_uart(void) {
             MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "0 = Print register map.\n\r");
             MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "1 = Read from SPI FLASH.\n\r");
             MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "2 = Check CRC on programming files.\n\r");
+            MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "3 = Display command buffer\n\r");
+            MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "4 = Display flash buffers\n\r");
             //MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "3 = Corrupt a programming file (test CRC checks)\n\r");
-            MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "3 = Read FAN I2C debug info\n\r");
-            MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "4 = Reset FAN I2C\n\r");
-            MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "5 = Core I2C arbitrary access\n\r");
+            //MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "3 = Read FAN I2C debug info\n\r");
+            //MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "4 = Reset FAN I2C\n\r");
+            //MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "5 = Core I2C arbitrary access\n\r");
             MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "6 = APB arbitrary access\n\r");
             MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "7 = GPIO arbitrary access\n\r");
             MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "8 = Assert Fabric reset\n\r");
@@ -1958,7 +1993,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
     uint8_t txt2[] = " 00\0";
     uint8_t flash_buf[16], i;
     uint32_t reg32 = 0, flash_addr = 0;
-    uint16_t a16 = 0;
+    uint16_t a16 = 0, d16 = 0;
 
     i2c_s_timer = tick_counter;
     i2c_s_access = 1;
@@ -1969,29 +2004,93 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
     //GPAC2: 2-byte write transactions (either 1B command + 1B data, or 2B data)
     //GPAC3: 4-byte transaction, fixed format: 2B address + 2B data
     if (size == 4) {
-        /* Code for GPAC3 here
-         * 1.
+        /*
+         * Code for GPAC3 here
          */
         a16 = (data[0]<<8) | data[1];
-
-        dbg_print("Received 16bit address: 0x");
-        dbg_printnum(a16, 2);
-        dbg_print("\n\r");
+        d16 = (data[2]<<8) | data[3];
 
         //set pointer to TX buffer according to specified address
         if (a16 < I2C_SLAVE_TXBUF_SIZE) {
+            //just set the buffer for reading
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (i2c_slave_tx_buf+a16), (I2C_SLAVE_TXBUF_SIZE-a16) );
+
+        } else if ( (a16 >= FLASH_WBUF_START) && (a16 < FLASH_RBUF_START) ) { //write to flash buffer
+
+            a16 -= FLASH_WBUF_START; //remove offset from address
+            MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (flash_rbuf+a16), (FLASH_BUF_LEN-a16) );
+            //write both buffers
+            flash_wbuf[a16]   = data[2];
+            flash_rbuf[a16]   = data[2];
+            flash_wbuf[a16+1] = data[3];
+            flash_rbuf[a16+1] = data[3];
+            dbg_printnum(a16,4); dbg_print(":");
+            dbg_printnum(data[2],2); dbg_print(":");
+            dbg_printnum(data[3],2); dbg_print("\n\r");
+
+        } else if ( (a16 >= FLASH_RBUF_START) && (a16 < (FLASH_RBUF_START+FLASH_BUF_LEN)) ) { //read from flash buffer
+
+            //dbg_print("I2C:FLASH_R:(A) = ");
+            a16 -= FLASH_RBUF_START; //remove offset from address
+            MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (flash_rbuf+a16), (FLASH_BUF_LEN-a16) );
+            dbg_printnum(a16,4); dbg_print("\n\r");
+
+        } else if ( (a16 >= CMD_BUF_START) && (a16 < (CMD_BUF_START+CMD_BUF_LEN)) ) {
+
+            a16 -= CMD_BUF_START; //remove offset from address
+            MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) cmd_buf+a16, CMD_BUF_LEN-a16 );
+
+            //update command buffer
+            cmd_buf[a16]   = data[2];
+            cmd_buf[a16+1] = data[3];
+
+            if (a16 == 0) { //execute command
+                switch (d16) {
+                    case 0x0000: //do nothing (can be used to set the address in order to read the whole command buffer)
+                        break;
+                    case 0x0001: //read flash
+                        dbg_print("Read flash\n\r");
+                        break;
+                    case 0x0002: //erase flash sector
+                        dbg_print("Erase flash sector\n\r");
+                        break;
+                    case 0x0003: //write flash
+                        dbg_print("Program flash\n\r");
+                        break;
+                    case 0x0004: //run IAP with FW0
+                        dbg_print("Run IAP(0)\n\r");
+                        break;
+                    case 0x0005: //run IAP with FW1
+                        dbg_print("Run IAP(1)\n\r");
+                        break;
+                    case 0x0006: //RESET
+                        dbg_print("CPU reset\n\r");
+                        break;
+                    case 0x0007: //read SD card
+                        dbg_print("Read SD card\n\r");
+                        break;
+                    case 0x0008: //write SD card
+                        dbg_print("Write SD card\n\r");
+                        break;
+                    case 0x0009: //timed shutdown
+                        dbg_print("Timed shutdown\n\r");
+                        break;
+                    default:
+                        dbg_print("I2C:ERROR: received unsupported command: 0x");
+                        dbg_printnum(d16,4);
+                        dbg_print("\n\r");
+                }
+            }
+        } else {
+            dbg_print("I2C_ERROR: attempted access to unsupported address 0x");
+            dbg_printnum(a16,4);
+            dbg_print("\n\r");
         }
 
         return MSS_I2C_REENABLE_SLAVE_RX;
+
     } else if (size != 2) {
-        dbg_print("\n\rI2C_SLAVE:ERROR: rx size is ");
-        dbg_printnum_d(size, 2);
-        dbg_print("\n\r                 rx data is ");
-        for (i=0; i<size; i++) {
-            dbg_printnum(data[i],2);
-        }
-        dbg_print("\n\r");
+        dbg_print("\n\rI2C_SLAVE:ERROR: bad transaction size (shall be 2 or 4 bytes)\n\r");
         i2c_s_status = 0;
         return MSS_I2C_REENABLE_SLAVE_RX;
     }
@@ -2007,10 +2106,6 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
             } else {
                 //receive the address for a read transaction
                 a16 = (data[0]<<8) | data[1];
-
-                dbg_print("Received 16bit address: 0x");
-                dbg_printnum(a16, 2);
-                dbg_print("\n\r");
 
                 //set pointer to TX buffer according to specified address
                 if (a16 < I2C_SLAVE_TXBUF_SIZE) {
@@ -2053,7 +2148,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         flash_buf[i] = 0xAA;
                     }
                     //erase old data. Write is made once at the end
-                    FLASH_erase_sector(flash_addr); //TODO is it needed?
+                    FLASH_erase_sector(flash_addr); //_TODO is it needed?
                     //update register map
                     i2c_slave_tx_buf[0x1F8+2*i2c_s_cmd]   = 0xAA;
                     i2c_slave_tx_buf[0x1F8+2*i2c_s_cmd+1] = 0xAA;
