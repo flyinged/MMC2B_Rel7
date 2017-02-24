@@ -166,6 +166,7 @@
  * 5.21.1 - Added flash read and write buffers
  * 5.21.2 - Added commands to display buffers
  * 5.21.3 - Set up framework for GPAC3 commands
+ * 5.21.4 - Implemented Reset, Timed-shutdown and SDcard-access I2C commands (GPAC3)
  */
 
 #include <string.h>
@@ -198,7 +199,7 @@
 #include "ethernet.h"
 
 /* VERSIONS */
-const uint8_t sw_version[]   = "5.21.3\n\r";
+const uint8_t sw_version[]   = "5.21.4\n\r";
 uint8_t       fw_version[]   = "000\n\r\0";
 uint8_t       fw_version_x[] = "105\n\r\0"; //expected FW version
 
@@ -215,9 +216,14 @@ uint32_t power_fail_time;
 
 #define FLASH_BUF_LEN    256
 #define CMD_BUF_LEN      16
-#define CMD_BUF_START    0x0800
+#define CMD_WBUF_START   0x0800
+#define CMD_RBUF_START   0x0900
 #define FLASH_WBUF_START 0x1000
 #define FLASH_RBUF_START (FLASH_WBUF_START+FLASH_BUF_LEN)
+
+#define CMD_BUF_RES_OFF 4
+#define CMD_BUF_ADR_OFF 8
+#define CMD_BUF_KEY_OFF 12
 
 uint8_t cmd_buf[CMD_BUF_LEN];
 uint8_t flash_rbuf[FLASH_BUF_LEN];
@@ -261,7 +267,7 @@ volatile uint32_t i2c_s_timer   = 0;    //used for command timeout
 static uint8_t  i2c_s_tout    = 0x00; //used for command timeout
 static uint8_t  i2c_s_status  = 0x00; //FSM status
 static uint8_t  i2c_s_cmd     = 0xFF; //received command
-static uint8_t  i2c_s_sdwrite = 0x00; //write data to SD card
+static uint8_t  i2c_s_sd_access = 0x00; //access SD card
 static uint32_t i2c_s_len     = 0x00000000; //length of received file
 static uint32_t i2c_s_waddr   = 0x00000000; //spi EEPROM write address
 static uint32_t i2c_s_cnt     = 0x00000000; //buffer index
@@ -284,6 +290,7 @@ extern void get_ip(char *ipStr, uint8_t network_mode);
 
 uint32_t crc32_1byte(const void* data, size_t length, uint32_t previousCrc32);
 uint32_t compute_spi_crc(uint8_t index);
+void write_result_reg(uint8_t *buf, uint16_t cmd, uint16_t data);
 
 extern uint8_t LTC2945_errcnt;
 
@@ -1022,23 +1029,39 @@ int main()
         core_i2c_dowrite(&g_core_i2c_pm, I2C_GPO_SER_ADDR, tx_buf, 3, (uint8_t*) "Set GPO");
 
         //Execute Write to SDcard command
-        if (i2c_s_sdwrite != 0 && i2c_s_status == 0x00) {
-            MSS_UART_polled_tx_string(&g_mss_uart0, (uint8_t*) "Writing SD card.\n\r    Address = ");
+        if (i2c_s_sd_access == 1 && i2c_s_status == 0x00) {
+            dbg_print("Writing SD card.\n\r    Address = 0x");
             memcpy(text_buf, "0x00000000\n\r\0", 13);
             rval = i2c_s_buf[0]<<24 | i2c_s_buf[1]<<16 | i2c_s_buf[2]<<8 | i2c_s_buf[3];
-            uint_to_hexstr(rval, text_buf+2, 8);
-            MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) text_buf);
-            MSS_UART_polled_tx_string(&g_mss_uart0, (uint8_t*) "    Data (char) = ");
-            MSS_UART_polled_tx( &g_mss_uart0, (const uint8_t *) i2c_s_buf+4, 16);
-            MSS_UART_polled_tx_string(&g_mss_uart0, (uint8_t*) "\n\r");
+            dbg_printnum(rval, 8);
+            dbg_print("    Data = ");
+            for(rval=4; rval<20; rval++) dbg_printnum(i2c_s_buf[rval], 2);
+            dbg_print("\n\r");
 
             sd_write(i2c_s_buf, i2c_s_buf+4, 16);
-            i2c_s_sdwrite = 0;
+            i2c_s_sd_access = 0;
+            MSS_I2C_enable_slave( &g_mss_i2c0 ); //re-enable slave
+        }
+
+        /* GPAC3 SD Card access */
+        if (i2c_s_sd_access == 2) { //read
+
+            dbg_print("I2C_SLAVE:SD-Card read\n\r");
+            sd_read(cmd_buf+CMD_BUF_ADR_OFF, flash_rbuf, 256);
+            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, 7, oled_error);
+            i2c_s_sd_access = 0;
+            MSS_I2C_enable_slave( &g_mss_i2c0 ); //re-enable slave
+
+        } else if (i2c_s_sd_access == 3) { //write
+
+            dbg_print("I2C_SLAVE:SD-Card write\n\r");
+            sd_write(cmd_buf+CMD_BUF_ADR_OFF, flash_wbuf, 16);
+            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, 8, oled_error);
+            i2c_s_sd_access = 0;
             MSS_I2C_enable_slave( &g_mss_i2c0 ); //re-enable slave
         }
 
         //handle I2c slave timeout
-
     	if (i2c_s_status == 0x00) {
             i2c_s_tout  = 0;
     	} else if (i2c_s_tout == 0) { //i2c slave FSM running
@@ -2010,13 +2033,22 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
         a16 = (data[0]<<8) | data[1];
         d16 = (data[2]<<8) | data[3];
 
+        dbg_print("RX:");
+        dbg_printnum(data[0],2);
+        dbg_printnum(data[1],2);
+        dbg_printnum(data[2],2);
+        dbg_printnum(data[3],2);
+        dbg_print("\n\r");
+
         //set pointer to TX buffer according to specified address
         if (a16 < I2C_SLAVE_TXBUF_SIZE) {
+            dbg_print("\n\rDBG0\n\r");
             //just set the buffer for reading
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (i2c_slave_tx_buf+a16), (I2C_SLAVE_TXBUF_SIZE-a16) );
 
         } else if ( (a16 >= FLASH_WBUF_START) && (a16 < FLASH_RBUF_START) ) { //write to flash buffer
 
+            dbg_print("\n\rDBG1\n\r");
             a16 -= FLASH_WBUF_START; //remove offset from address
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (flash_rbuf+a16), (FLASH_BUF_LEN-a16) );
             //write both buffers
@@ -2024,20 +2056,22 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
             flash_rbuf[a16]   = data[2];
             flash_wbuf[a16+1] = data[3];
             flash_rbuf[a16+1] = data[3];
-            dbg_printnum(a16,4); dbg_print(":");
-            dbg_printnum(data[2],2); dbg_print(":");
-            dbg_printnum(data[3],2); dbg_print("\n\r");
+//            dbg_printnum(a16,4); dbg_print(":");
+//            dbg_printnum(data[2],2); dbg_print(":");
+//            dbg_printnum(data[3],2); dbg_print("\n\r");
 
         } else if ( (a16 >= FLASH_RBUF_START) && (a16 < (FLASH_RBUF_START+FLASH_BUF_LEN)) ) { //read from flash buffer
 
+            dbg_print("\n\rDBG2\n\r");
             //dbg_print("I2C:FLASH_R:(A) = ");
             a16 -= FLASH_RBUF_START; //remove offset from address
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (flash_rbuf+a16), (FLASH_BUF_LEN-a16) );
-            dbg_printnum(a16,4); dbg_print("\n\r");
+            //dbg_printnum(a16,4); dbg_print("\n\r");
 
-        } else if ( (a16 >= CMD_BUF_START) && (a16 < (CMD_BUF_START+CMD_BUF_LEN)) ) {
+        } else if ( (a16 >= CMD_WBUF_START) && (a16 < (CMD_WBUF_START+CMD_BUF_LEN)) ) {
 
-            a16 -= CMD_BUF_START; //remove offset from address
+            dbg_print("\n\rDBG3\n\r");
+            a16 -= CMD_WBUF_START; //remove offset from address
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) cmd_buf+a16, CMD_BUF_LEN-a16 );
 
             //update command buffer
@@ -2049,31 +2083,44 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                     case 0x0000: //do nothing (can be used to set the address in order to read the whole command buffer)
                         break;
                     case 0x0001: //read flash
-                        dbg_print("Read flash\n\r");
+                        dbg_print("I2C_SLAVE:Read flash\n\r");
                         break;
                     case 0x0002: //erase flash sector
-                        dbg_print("Erase flash sector\n\r");
+                        dbg_print("I2C_SLAVE:Erase flash sector\n\r");
                         break;
                     case 0x0003: //write flash
-                        dbg_print("Program flash\n\r");
+                        dbg_print("I2C_SLAVE:Program flash\n\r");
                         break;
                     case 0x0004: //run IAP with FW0
-                        dbg_print("Run IAP(0)\n\r");
+                        dbg_print("I2C_SLAVE:PROGRAM FPGA: Image 0\n\r");
+//                        *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0x35000000; //'5'
+//                        MSS_TIM1_disable_irq();
+//                        return MSS_I2C_PAUSE_SLAVE_RX;
                         break;
                     case 0x0005: //run IAP with FW1
-                        dbg_print("Run IAP(1)\n\r");
+                        dbg_print("I2C_SLAVE:PROGRAM FPGA: Image 1\n\r");
+//                        *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0x36000000; //'6'
+//                        MSS_TIM1_disable_irq();
+//                        return MSS_I2C_PAUSE_SLAVE_RX;
                         break;
                     case 0x0006: //RESET
-                        dbg_print("CPU reset\n\r");
+                        dbg_print("I2C_SLAVE:Reset CPU\n\r");
+                        *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0xFF000000; //value not supported by bootloader: causes just a reboot
+                        MSS_TIM1_disable_irq();
+                        return MSS_I2C_PAUSE_SLAVE_RX;
                         break;
-                    case 0x0007: //read SD card
-                        dbg_print("Read SD card\n\r");
+                    case 0x0007: //read SD card (256B blocks)
+                        i2c_s_sd_access = 2;
+                        MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
                         break;
-                    case 0x0008: //write SD card
-                        dbg_print("Write SD card\n\r");
+                    case 0x0008: //write SD card (16B blocks)
+                        i2c_s_sd_access = 3;
+                        MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
                         break;
                     case 0x0009: //timed shutdown
-                        dbg_print("Timed shutdown\n\r");
+                        dbg_print("I2C_SLAVE:Timed shutdown\n\r");
+                        timed_shutdown = 1;
+                        return MSS_I2C_REENABLE_SLAVE_RX;
                         break;
                     default:
                         dbg_print("I2C:ERROR: received unsupported command: 0x");
@@ -2081,6 +2128,10 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         dbg_print("\n\r");
                 }
             }
+        } else if ( (a16 >= CMD_RBUF_START) && (a16 < (CMD_RBUF_START+CMD_BUF_LEN)) ) {
+            dbg_print("\n\rDBG4\n\r");
+            a16 -= CMD_RBUF_START; //remove offset from address
+            MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) cmd_buf+a16, CMD_BUF_LEN-a16 );
         } else {
             dbg_print("I2C_ERROR: attempted access to unsupported address 0x");
             dbg_printnum(a16,4);
@@ -2409,7 +2460,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                 } else { //write SD card
                     if(i2c_s_len == 0) {
                         //sd_write(i2c_s_buf, i2c_s_buf+4, 16);
-                        i2c_s_sdwrite = 1; //SD card is written during main loop (write from here does not work)
+                        i2c_s_sd_access = 1; //SD card is written during main loop (write from here does not work)
                         MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
                         i2c_s_status = 0;
                     }
@@ -3290,6 +3341,13 @@ uint32_t compute_spi_crc(uint8_t index) {
 
     MSS_UART_polled_tx_string( &g_mss_uart0, (const uint8_t *) "DONE\n\r");
     return crc;
+}
+
+void write_result_reg(uint8_t *buf, uint16_t cmd, uint16_t data) {
+    buf[0] = cmd>>8;
+    buf[1] = cmd&0xFF;
+    buf[2] = data>>8;
+    buf[3] = data&0xFF;
 }
 
 #if 0 //_FIXME: temporary for debug
