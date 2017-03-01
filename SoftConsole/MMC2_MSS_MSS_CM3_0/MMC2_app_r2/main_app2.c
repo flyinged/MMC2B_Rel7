@@ -2042,13 +2042,13 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
         a16 = (data[0]<<8) | data[1];
         d16 = (data[2]<<8) | data[3];
 
-        //set pointer to TX buffer according to specified address
-        if (a16 < I2C_SLAVE_TXBUF_SIZE) {
+        //Take action according to specified address
+        if (a16 < I2C_SLAVE_TXBUF_SIZE) { //measurements buffer
 
             //just set the buffer for reading
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (i2c_slave_tx_buf+a16), (I2C_SLAVE_TXBUF_SIZE-a16) );
 
-        } else if ( (a16 >= FLASH_WBUF_START) && (a16 < FLASH_RBUF_START) ) { //write to flash buffer
+        } else if ( (a16 >= FLASH_WBUF_START) && (a16 < FLASH_RBUF_START) ) { //Write buffer
 
             a16 -= FLASH_WBUF_START; //remove offset from address
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (flash_rbuf+a16), (FLASH_BUF_LEN-a16) );
@@ -2058,12 +2058,12 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
             flash_wbuf[a16+1] = data[3];
             flash_rbuf[a16+1] = data[3];
 
-        } else if ( (a16 >= FLASH_RBUF_START) && (a16 < (FLASH_RBUF_START+FLASH_BUF_LEN)) ) { //read from flash buffer
+        } else if ( (a16 >= FLASH_RBUF_START) && (a16 < (FLASH_RBUF_START+FLASH_BUF_LEN)) ) { //Read buffer
 
             a16 -= FLASH_RBUF_START; //remove offset from address
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) (flash_rbuf+a16), (FLASH_BUF_LEN-a16) );
 
-        } else if ( (a16 >= CMD_WBUF_START) && (a16 < (CMD_WBUF_START+CMD_BUF_LEN)) ) {
+        } else if ( (a16 >= CMD_WBUF_START) && (a16 < (CMD_WBUF_START+CMD_BUF_LEN)) ) { //Command buffer
 
             a16 -= CMD_WBUF_START; //remove offset from address
             MSS_I2C_set_slave_tx_buffer( &g_mss_i2c0, (const uint8_t*) cmd_buf+a16, CMD_BUF_LEN-a16 );
@@ -2073,13 +2073,13 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
             cmd_buf[a16+1] = data[3];
 
             //get current address from command register
-            flash_addr = cmd_buf[8]<<24 | cmd_buf[9]<<16 | cmd_buf[10]<<8 | cmd_buf[11];
-            //flash_addr   = buf8_to_32((cmd_buf+CMD_BUF_ADR_OFF));
+            //flash_addr = cmd_buf[8]<<24 | cmd_buf[9]<<16 | cmd_buf[10]<<8 | cmd_buf[11];
+            flash_addr   = buf8_to_32((cmd_buf+CMD_BUF_ADR_OFF));
             data_reg   = buf8_to_32((cmd_buf+CMD_BUF_DAT_OFF));
 
             //compute address of info section
-            i2c_s_cmd = ( (flash_addr >> 20) & 0xF );
-            flash_info_addr = 0x00F00000 + (i2c_s_cmd * S25FL256_SECTOR_SIZE);
+            i2c_s_cmd = ( (flash_addr >> 20) & 0xF ); //sequential ID of 1MB sectors in FLASH memory
+            flash_info_addr = 0x00F00000 + (i2c_s_cmd * S25FL256_SECTOR_SIZE); //space reserved in FLASH for information on the 1MB sectors 0 to 14
 
             if (a16 == 0) { //execute command
 
@@ -2178,16 +2178,16 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         return MSS_I2C_PAUSE_SLAVE_RX;
                         break;
                     case 0x0007: //read SD card (256B blocks)
-                        i2c_s_sd_access = 2;
+                        i2c_s_sd_access = 2; //SD access executed outside ISR (not working otherwise)
                         MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
                         break;
                     case 0x0008: //write SD card (16B blocks)
-                        i2c_s_sd_access = 3;
+                        i2c_s_sd_access = 3; //SD access executed outside ISR (not working otherwise)
                         MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
                         break;
                     case 0x0009: //timed shutdown
                         dbg_print("I2C_SLAVE:Timed shutdown\n\r");
-                        timed_shutdown = 1;
+                        timed_shutdown = 1; //command executed outside ISR
                         break;
                     case 0x000A: //set file length
                         dbg_print("I2C_SLAVE:Write file length\n\r");
@@ -2202,7 +2202,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                                 dbg_print("    ERROR: Maximum allowed size is 0x100000 (1MiB)\n\r");
                                 write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 3);
                             } else {
-                                dbg_print("    Written 0xDDDDDDDD");
+                                dbg_print("    Written 0xDDDDDDDD ");
                                 dbg_printnum(data_reg,8);
                                 dbg_print(" to flash address 0x");
                                 dbg_printnum(flash_info_addr,8);
@@ -2215,7 +2215,8 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                                 flash_buf[5] = ((data_reg >> 16) & 0xFF);
                                 flash_buf[6] = ((data_reg >>  8) & 0xFF);
                                 flash_buf[7] = ((data_reg      ) & 0xFF);
-                                //FLASH_program(flash_info_addr, flash_buf, 8); //TODO enable
+                                FLASH_program(flash_info_addr, flash_buf, 8);
+                                write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
                             }
                         }
                         break;
