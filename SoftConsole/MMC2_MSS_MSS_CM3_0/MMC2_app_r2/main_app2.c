@@ -171,6 +171,7 @@
  * 5.21.6 - Dummy version of FLASH erase command (GPAC3)
  * 5.21.7 - Enabled FLASH-Erase and FLASH-Program commands (GPAC3)
  * 5.21.8 - Added Write-File-Size command (GPAC3)
+ * 5.21.9 - Added CRC dummy command
  */
 
 #include <string.h>
@@ -203,7 +204,7 @@
 #include "ethernet.h"
 
 /* VERSIONS */
-const uint8_t sw_version[]   = "5.21.8\n\r";
+const uint8_t sw_version[]   = "5.21.9\n\r";
 uint8_t       fw_version[]   = "000\n\r\0";
 uint8_t       fw_version_x[] = "105\n\r\0"; //expected FW version
 
@@ -962,7 +963,7 @@ int main()
                 if ( power_fail_alarm == 0x00 ) { //first detection: start counting
                     power_fail_time = tick_counter;
                     power_fail_alarm = 0x01;
-                    MSS_UART_polled_tx_string( &g_mss_uart0, (uint8_t *) "Power failure alarm\n\r");
+                    MSS_UART_polled_tx_string( &g_mss_uart0, (uint8_t *) "Power failure pre-alarm\n\r");
 
                     if (pwr_switch_dbg) { //_MYDEBUG write DBG info to flash
                         //write updated buffer
@@ -972,7 +973,7 @@ int main()
                     }
 
                 } else if ( (tick_counter - power_fail_time) > 6000) { //60 second wait before power failure confirmation
-                    MSS_UART_polled_tx_string( &g_mss_uart0, (uint8_t *) "Power failure\n\r");
+                    MSS_UART_polled_tx_string( &g_mss_uart0, (uint8_t *) "Power failure confirmed\n\r");
 
                     //update eeprom only if new failure value is different from the previous one
                     if ((power_fail_new | power_fail_old) != power_fail_old) {
@@ -2202,15 +2203,15 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                                 dbg_print("    ERROR: Maximum allowed size is 0x100000 (1MiB)\n\r");
                                 write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 3);
                             } else {
-                                dbg_print("    Written 0xDDDDDDDD ");
+                                dbg_print("    Written 0xCCCCCCCC ");
                                 dbg_printnum(data_reg,8);
                                 dbg_print(" to flash address 0x");
                                 dbg_printnum(flash_info_addr,8);
                                 dbg_print("\n\r");
-                                flash_buf[0] = 0xDD;
-                                flash_buf[1] = 0xDD;
-                                flash_buf[2] = 0xDD;
-                                flash_buf[3] = 0xDD;
+                                flash_buf[0] = 0xCC;
+                                flash_buf[1] = 0xCC;
+                                flash_buf[2] = 0xCC;
+                                flash_buf[3] = 0xCC;
                                 flash_buf[4] = ((data_reg >> 24) & 0xFF);
                                 flash_buf[5] = ((data_reg >> 16) & 0xFF);
                                 flash_buf[6] = ((data_reg >>  8) & 0xFF);
@@ -2220,6 +2221,48 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                             }
                         }
                         break;
+                    case 0x000B: //compute CRC
+                        dbg_print("I2C_SLAVE:Compute file CRC\n\r");
+                        if (flash_addr % 0x100000) {
+                            dbg_print("    ERROR: Address shall be aligned to file size (1MiB)\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 1);
+                        } else if (flash_addr > 0x00E00000) {
+                            dbg_print("    ERROR: Maximum allowed address is 0x00E00000\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 2);
+                        } else {
+                            //read current status
+                            FLASH_read(flash_info_addr, flash_buf, 8);
+                            data_reg = buf8_to_32((flash_buf+4)); //file size
+
+                            if (data_reg > 0x100000) {
+                                dbg_print("    ERROR: Maximum allowed size is 0x100000 (1MiB)\n\r");
+                                write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 3);
+                            } else {
+                                //compute CRC, erase FLASH sector, update with new data
+                                dbg_print("Computing CRC...");
+                                reg32 = compute_spi_crc(i2c_s_cmd);
+                                flash_buf[0] = 0xDD;
+                                flash_buf[1] = 0xDD;
+                                flash_buf[2] = 0xDD;
+                                flash_buf[3] = 0xDD;
+                                flash_buf[8]  = (reg32>>24) & 0xFF;
+                                flash_buf[9]  = (reg32>>16) & 0xFF;
+                                flash_buf[10] = (reg32>> 8) & 0xFF;
+                                flash_buf[11] = (reg32    ) & 0xFF;
+
+                                dbg_print("Erasing sector 0x"); dbg_printnum(flash_info_addr,8); dbg_print("\n\r");
+                                FLASH_erase_sector(flash_info_addr);
+                                dbg_print("Writing sector 0x");
+                                for (i=0; i<12; i++) {
+                                    dbg_printnum(flash_buf[i], 2);
+                                }
+                                dbg_print("\n\r");
+                                FLASH_program(flash_info_addr, flash_buf, 12); //TODO
+                                write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
+                            }
+                        }
+                        break;
+
                     default:
                         dbg_print("I2C:ERROR: received unsupported command: 0x");
                         dbg_printnum(d16,4);
