@@ -172,6 +172,7 @@
  * 5.21.7 - Enabled FLASH-Erase and FLASH-Program commands (GPAC3)
  * 5.21.8 - Added Write-File-Size command (GPAC3)
  * 5.21.9 - Added CRC dummy command
+ * 5.21.10- Added SECURE COMMANDS (protection against accidental execution of some commands)
  */
 
 #include <string.h>
@@ -204,7 +205,7 @@
 #include "ethernet.h"
 
 /* VERSIONS */
-const uint8_t sw_version[]   = "5.21.9\n\r";
+const uint8_t sw_version[]   = "5.21.10\n\r";
 uint8_t       fw_version[]   = "000\n\r\0";
 uint8_t       fw_version_x[] = "105\n\r\0"; //expected FW version
 
@@ -1052,7 +1053,6 @@ int main()
         /* GPAC3 SD Card access */
         if (i2c_s_sd_access == 2) { //read
 
-            dbg_print("I2C_SLAVE:SD-Card read\n\r");
             sd_read(cmd_buf+CMD_BUF_ADR_OFF, flash_rbuf, 256);
             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, 7, oled_error);
             i2c_s_sd_access = 0;
@@ -1060,7 +1060,6 @@ int main()
 
         } else if (i2c_s_sd_access == 3) { //write
 
-            dbg_print("I2C_SLAVE:SD-Card write\n\r");
             sd_write(cmd_buf+CMD_BUF_ADR_OFF, flash_wbuf, 16);
             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, 8, oled_error);
             i2c_s_sd_access = 0;
@@ -1099,7 +1098,8 @@ void poll_uart(void) {
 	uint8_t uart_rx_buf[1];
 	uint8_t txt[16], txt2[16];
 	uint32_t i, j;
-	uint8_t i2c_rw, i2c_id, i2c_addr, i2c_n, tx_buf[5], rx_buf[4], *ptr8;
+    uint8_t i2c_rw, *ptr8;
+    //uint8_t i2c_id, i2c_addr, i2c_n, tx_buf[5], rx_buf[4];
 
     MSS_WD_reload();
 
@@ -2014,6 +2014,8 @@ void config_spi() {
  */
 #undef MSS_I2C_INCLUDE_SLA_IN_RX_PAYLOAD
 
+#define USE_SECURE_COMMANDS //when defined, CMD_UNLOCK_KEY should be written to CMD_KEY register before every secure command (2,3,4,5,6,8,9,A,B)
+#define CMD_UNLOCK_KEY 0x4F50454E //ASCII for 'OPEN'
 #define MAX_CMD 10
 
 #define buf8_to_16(x) ((x[0]<<8) | x[1])
@@ -2023,7 +2025,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
 {
     uint8_t txt[] = "0x00000000\n\r\0";
     uint8_t txt2[] = " 00\0";
-    uint8_t flash_buf[16], i;
+    uint8_t flash_buf[16], i, lock;
     uint32_t reg32; //used for GPAC2 commands
     uint32_t flash_addr = 0, flash_info_addr, data_reg;
     uint16_t a16 = 0, d16 = 0;
@@ -2074,13 +2076,23 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
             cmd_buf[a16+1] = data[3];
 
             //get current address from command register
-            //flash_addr = cmd_buf[8]<<24 | cmd_buf[9]<<16 | cmd_buf[10]<<8 | cmd_buf[11];
-            flash_addr   = buf8_to_32((cmd_buf+CMD_BUF_ADR_OFF));
+            flash_addr = buf8_to_32((cmd_buf+CMD_BUF_ADR_OFF));
             data_reg   = buf8_to_32((cmd_buf+CMD_BUF_DAT_OFF));
 
             //compute address of info section
             i2c_s_cmd = ( (flash_addr >> 20) & 0xF ); //sequential ID of 1MB sectors in FLASH memory
             flash_info_addr = 0x00F00000 + (i2c_s_cmd * S25FL256_SECTOR_SIZE); //space reserved in FLASH for information on the 1MB sectors 0 to 14
+
+            //security
+#ifdef USE_SECURE_COMMANDS
+            if (buf8_to_32((cmd_buf+CMD_BUF_KEY_OFF)) == CMD_UNLOCK_KEY) {
+                lock = 0;
+            } else {
+                lock = 1;
+            }
+#else
+            lock = 0;
+#endif
 
             if (a16 == 0) { //execute command
 
@@ -2101,7 +2113,10 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         break;
                     case 0x0002: //erase flash sector
                         dbg_print("I2C_SLAVE:Erase flash sector\n\r");
-                        if (flash_addr % S25FL256_SECTOR_SIZE) {
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else if (flash_addr % S25FL256_SECTOR_SIZE) {
                             dbg_print("    ERROR: Address shall be aligned to sector size (0x10000)\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 1);
                         } else if (flash_addr > 0x00EFFFFF) {
@@ -2140,11 +2155,15 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
 
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
                             dbg_print("    DONE\n\r");
+
                         }
                         break;
                     case 0x0003: //write flash
                         dbg_print("I2C_SLAVE:Program flash\n\r");
-                        if (flash_addr % FLASH_BUF_LEN) {
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else if (flash_addr % FLASH_BUF_LEN) {
                             dbg_print("    ERROR: Address shall be aligned to flash buffer size (0x100)\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 1);
                         } else if (flash_addr > 0x00EFFF00) {
@@ -2162,37 +2181,67 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         break;
                     case 0x0004: //run IAP with FW0
                         dbg_print("I2C_SLAVE:PROGRAM FPGA: Image 0\n\r");
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else {
 //                        *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0x35000000; //'5'
 //                        MSS_TIM1_disable_irq();
 //                        return MSS_I2C_PAUSE_SLAVE_RX;
+                        }
                         break;
                     case 0x0005: //run IAP with FW1
                         dbg_print("I2C_SLAVE:PROGRAM FPGA: Image 1\n\r");
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else {
 //                        *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0x36000000; //'6'
 //                        MSS_TIM1_disable_irq();
 //                        return MSS_I2C_PAUSE_SLAVE_RX;
+                        }
                         break;
                     case 0x0006: //RESET
                         dbg_print("I2C_SLAVE:Reset CPU\n\r");
-                        *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0xFF000000; //value not supported by bootloader: causes just a reboot
-                        MSS_TIM1_disable_irq();
-                        return MSS_I2C_PAUSE_SLAVE_RX;
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else {
+                            *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0xFF000000; //value not supported by bootloader: causes just a reboot
+                            MSS_TIM1_disable_irq();
+                            return MSS_I2C_PAUSE_SLAVE_RX;
+                        }
                         break;
                     case 0x0007: //read SD card (256B blocks)
+                        dbg_print("I2C_SLAVE:SD-Card read\n\r");
                         i2c_s_sd_access = 2; //SD access executed outside ISR (not working otherwise)
                         MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
                         break;
                     case 0x0008: //write SD card (16B blocks)
-                        i2c_s_sd_access = 3; //SD access executed outside ISR (not working otherwise)
-                        MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
+                        dbg_print("I2C_SLAVE:SD-Card write\n\r");
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else {
+                            i2c_s_sd_access = 3; //SD access executed outside ISR (not working otherwise)
+                            MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
+                        }
                         break;
                     case 0x0009: //timed shutdown
                         dbg_print("I2C_SLAVE:Timed shutdown\n\r");
-                        timed_shutdown = 1; //command executed outside ISR
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else {
+                            timed_shutdown = 1; //command executed outside ISR
+                        }
                         break;
                     case 0x000A: //set file length
                         dbg_print("I2C_SLAVE:Write file length\n\r");
-                        if (flash_addr % 0x100000) {
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else if (flash_addr % 0x100000) {
                             dbg_print("    ERROR: Address shall be aligned to file size (1MiB)\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 1);
                         } else if (flash_addr > 0x00E00000) {
@@ -2221,9 +2270,12 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                             }
                         }
                         break;
-                    case 0x000B: //compute CRC
+                    case 0x000B: //compute CRC and write it to flash
                         dbg_print("I2C_SLAVE:Compute file CRC\n\r");
-                        if (flash_addr % 0x100000) {
+                        if (lock) {
+                            dbg_print("    ERROR: This command needs the unlock key\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else if (flash_addr % 0x100000) {
                             dbg_print("    ERROR: Address shall be aligned to file size (1MiB)\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 1);
                         } else if (flash_addr > 0x00E00000) {
@@ -2257,7 +2309,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                                     dbg_printnum(flash_buf[i], 2);
                                 }
                                 dbg_print("\n\r");
-                                FLASH_program(flash_info_addr, flash_buf, 12); //TODO
+                                FLASH_program(flash_info_addr, flash_buf, 12);
                                 write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
                             }
                         }
@@ -2268,6 +2320,8 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         dbg_printnum(d16,4);
                         dbg_print("\n\r");
                 }
+
+                memset((cmd_buf+CMD_BUF_KEY_OFF), 0, 4); //reset key after performing any command
             }
         } else if ( (a16 >= CMD_RBUF_START) && (a16 < (CMD_RBUF_START+CMD_BUF_LEN)) ) {
 
