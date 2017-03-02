@@ -2096,13 +2096,11 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
 
             if (a16 == 0) { //execute command
 
-                dbg_print("\n\r");
-
                 switch (d16) {
                     case 0x0000: //do nothing (can be used to set the address in order to read the whole command buffer)
                         break;
                     case 0x0001: //read flash
-                        dbg_print("I2C_SLAVE:Read flash\n\r");
+                        //dbg_print("I2C_SLAVE:Read flash\n\r");
                         if (flash_addr & 0xFF000000) {
                             dbg_print("    ERROR: Maximum allowed address is 0x00FFFFFF\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 1);
@@ -2112,7 +2110,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         }
                         break;
                     case 0x0002: //erase flash sector
-                        dbg_print("I2C_SLAVE:Erase flash sector\n\r");
+                        //dbg_print("I2C_SLAVE:Erase flash sector\n\r");
                         if (lock) {
                             dbg_print("    ERROR: This command needs the unlock key\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
@@ -2149,17 +2147,11 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
 
                             //Perform actual sector erase
                             FLASH_erase_sector(flash_addr);
-                            dbg_print("    Erased sector 0x");
-                            dbg_printnum(flash_addr, 8);
-                            dbg_print("\n\r");
-
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
-                            dbg_print("    DONE\n\r");
-
                         }
                         break;
                     case 0x0003: //write flash
-                        dbg_print("I2C_SLAVE:Program flash\n\r");
+                        //dbg_print("I2C_SLAVE:Program flash\n\r");
                         if (lock) {
                             dbg_print("    ERROR: This command needs the unlock key\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
@@ -2172,11 +2164,6 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         } else {
                             FLASH_program(flash_addr, flash_wbuf, FLASH_BUF_LEN);
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
-                            dbg_print("    Written range 0x");
-                            dbg_printnum(flash_addr, 8);
-                            dbg_print(" - ");
-                            dbg_printnum(flash_addr+255, 8);
-                            dbg_print("\n\r");
                         }
                         break;
                     case 0x0004: //run IAP with FW0
@@ -2257,6 +2244,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                                 dbg_print(" to flash address 0x");
                                 dbg_printnum(flash_info_addr,8);
                                 dbg_print("\n\r");
+
                                 flash_buf[0] = 0xCC;
                                 flash_buf[1] = 0xCC;
                                 flash_buf[2] = 0xCC;
@@ -2265,6 +2253,8 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                                 flash_buf[5] = ((data_reg >> 16) & 0xFF);
                                 flash_buf[6] = ((data_reg >>  8) & 0xFF);
                                 flash_buf[7] = ((data_reg      ) & 0xFF);
+
+                                FLASH_erase_sector(flash_info_addr);
                                 FLASH_program(flash_info_addr, flash_buf, 8);
                                 write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
                             }
@@ -2291,8 +2281,15 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                                 write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 3);
                             } else {
                                 //compute CRC, erase FLASH sector, update with new data
-                                dbg_print("Computing CRC...");
                                 reg32 = compute_spi_crc(i2c_s_cmd);
+
+                                dbg_print("    Written 0xDDDDDDDD ");
+                                dbg_printnum(data_reg,8);
+                                dbg_printnum(reg32,8);
+                                dbg_print(" to flash address 0x");
+                                dbg_printnum(flash_info_addr,8);
+                                dbg_print("\n\r");
+
                                 flash_buf[0] = 0xDD;
                                 flash_buf[1] = 0xDD;
                                 flash_buf[2] = 0xDD;
@@ -2302,13 +2299,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                                 flash_buf[10] = (reg32>> 8) & 0xFF;
                                 flash_buf[11] = (reg32    ) & 0xFF;
 
-                                dbg_print("Erasing sector 0x"); dbg_printnum(flash_info_addr,8); dbg_print("\n\r");
                                 FLASH_erase_sector(flash_info_addr);
-                                dbg_print("Writing sector 0x");
-                                for (i=0; i<12; i++) {
-                                    dbg_printnum(flash_buf[i], 2);
-                                }
-                                dbg_print("\n\r");
                                 FLASH_program(flash_info_addr, flash_buf, 12);
                                 write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
                             }
