@@ -172,7 +172,9 @@
  * 5.21.7 - Enabled FLASH-Erase and FLASH-Program commands (GPAC3)
  * 5.21.8 - Added Write-File-Size command (GPAC3)
  * 5.21.9 - Added CRC dummy command
- * 5.21.10- Added SECURE COMMANDS (protection against accidental execution of some commands)
+ * 5.21.10- Added LOCK feature to GPAC3 commands (protection against accidental execution of some commands)
+ * 5.21.11- Added IAP commands (GPAC3)
+ * 5.22   - GPAC3 I2C commands. Release
  */
 
 #include <string.h>
@@ -205,7 +207,7 @@
 #include "ethernet.h"
 
 /* VERSIONS */
-const uint8_t sw_version[]   = "5.21.10\n\r";
+const uint8_t sw_version[]   = "5.22\n\r";
 uint8_t       fw_version[]   = "000\n\r\0";
 uint8_t       fw_version_x[] = "105\n\r\0"; //expected FW version
 
@@ -531,18 +533,9 @@ int main()
     MSS_UART_init( ComHandle4D, MSS_UART_9600_BAUD, MSS_UART_DATA_8_BITS | MSS_UART_NO_PARITY | MSS_UART_ONE_STOP_BIT );
 
     //clear the display
-    dbg_print("OLED CLS\n\r");
+    //dbg_print("OLED CLS\n\r");
     gfx_Cls(); //always do this
 
-//    if (oled_error) {
-//        dbg_print("Reset OLED\n\r");
-//        tx_buf[0] = 0x2; //output register
-//        tx_buf[1] = 0x00; tx_buf[2] = 0x12; //defaults LSB first, 0x1204
-//        core_i2c_dowrite(&g_core_i2c_pm, I2C_GPI_SER_ADDR, tx_buf, 3, (uint8_t*)"RESET OLED");
-//        tx_buf[1] = 0x04;
-//        core_i2c_dowrite(&g_core_i2c_pm, I2C_GPI_SER_ADDR, tx_buf, 3, (uint8_t*)"RESET OLED");
-//        sleep(1000);
-//    }
     //unlock display if NACK is received
     if (oled_error == Err4D_NAK) {
         dbg_print("OLED unlock\n\r");
@@ -551,19 +544,19 @@ int main()
     oled_en = 1; //oled enable. if any OLED function times out / returns NACK, this bit is reset (avoid getting stuck on crazy display)
     oled_contrast = 15;
     if (oled_en) {
-        dbg_print("OLED set contrast\n\r");
+        //dbg_print("OLED set contrast\n\r");
         gfx_Contrast(oled_contrast);
     }
     if (oled_en) {
-        dbg_print("OLED set timeout\n\r");
+        //dbg_print("OLED set timeout\n\r");
         SSTimeout(0xFFFF); //max timeout before screen saver
     }
     if (oled_en) {
-        dbg_print("OLED CLS\n\r");
+        //dbg_print("OLED CLS\n\r");
         gfx_Cls();
     }
     if (oled_en) {
-        dbg_print("OLED set color\n\r");
+        //dbg_print("OLED set color\n\r");
         txt_FGcolour(oled_color);
     }
 
@@ -682,12 +675,7 @@ int main()
     //get facbric outputs
     fabric2cpu_new = HW_get_32bit_reg(FABRIC2CPU_REG);
     dbg_print("First FABRIC2CPU read = 0x"); dbg_printnum(fabric2cpu_new,8); dbg_print("\n\r");
-    //set GPO
-//    tx_buf[0] = 2; //output register
-//    tx_buf[1] = (fabric2cpu_new     ) & 0xFF; //LSB first
-//    tx_buf[2] = (fabric2cpu_new >> 8) & 0xFF;
-//    core_i2c_dowrite(&g_core_i2c_pm, I2C_GPI_SER_ADDR, tx_buf, 3, (uint8_t*) "Set GPO");
-//    dbg_print("First GPO write = 0x"); dbg_printnum(fabric2cpu_new&0xFFFF, 4); dbg_print("\n\r");
+
 
     /**********************************************************************************************************
      ************************************* FAILSAFE STUFF *****************************************************
@@ -2132,9 +2120,8 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                              * 0x4: File length: used to compute CRC and to copy the file in external RAM during boot. MAX=0x100000 (1MB)
                              * 0x8: CRC: CRC32 calculated bytewise using file-length.
                              */
-                            FLASH_read(flash_addr, flash_buf, 4);
-                            data_reg = flash_buf[0]<<24 | flash_buf[1]<<16 | flash_buf[2]<<8 | flash_buf[3];
-                            //data_reg = buf8_to_32(flash_buf);
+                            FLASH_read(flash_info_addr, flash_buf, 4);
+                            data_reg = buf8_to_32(flash_buf);
                             if (data_reg != 0xFFFFFFFF) {
                                 FLASH_erase_sector(flash_info_addr); //erase info section
                             }
@@ -2162,6 +2149,13 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                             dbg_print("    ERROR: Maximum allowed address is 0x00EFFF00\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 2);
                         } else {
+                            /* When writing to a file, make sure file info is cleared */
+                            FLASH_read(flash_info_addr, flash_buf, 4);
+                            data_reg = buf8_to_32(flash_buf);
+                            if (data_reg != 0xFFFFFFFF) {
+                                FLASH_erase_sector(flash_info_addr); //erase info section
+                            }
+
                             FLASH_program(flash_addr, flash_wbuf, FLASH_BUF_LEN);
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 0);
                         }
@@ -2172,9 +2166,9 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                             dbg_print("    ERROR: This command needs the unlock key\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
                         } else {
-//                        *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0x35000000; //'5'
-//                        MSS_TIM1_disable_irq();
-//                        return MSS_I2C_PAUSE_SLAVE_RX;
+                            *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0x35000000; //'5'
+                            MSS_TIM1_disable_irq();
+                            return MSS_I2C_PAUSE_SLAVE_RX;
                         }
                         break;
                     case 0x0005: //run IAP with FW1
@@ -2183,9 +2177,9 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                             dbg_print("    ERROR: This command needs the unlock key\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
                         } else {
-//                        *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0x36000000; //'6'
-//                        MSS_TIM1_disable_irq();
-//                        return MSS_I2C_PAUSE_SLAVE_RX;
+                            *(volatile uint32_t*)(MBU_MMC_V2B_APB_0) = 0x36000000; //'6'
+                            MSS_TIM1_disable_irq();
+                            return MSS_I2C_PAUSE_SLAVE_RX;
                         }
                         break;
                     case 0x0006: //RESET
@@ -2209,6 +2203,9 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         if (lock) {
                             dbg_print("    ERROR: This command needs the unlock key\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 15);
+                        } else if (flash_addr % 0x200) {
+                            dbg_print("    ERROR: Address shall be aligned to SD sector size (0x200)\n\r");
+                            write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 1);
                         } else {
                             i2c_s_sd_access = 3; //SD access executed outside ISR (not working otherwise)
                             MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
