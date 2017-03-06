@@ -175,6 +175,7 @@
  * 5.21.10- Added LOCK feature to GPAC3 commands (protection against accidental execution of some commands)
  * 5.21.11- Added IAP commands (GPAC3)
  * 5.22   - GPAC3 I2C commands. Release
+ * 5.23   - GPAC3 I2C commands: extended SD card access commands.
  */
 
 #include <string.h>
@@ -207,7 +208,7 @@
 #include "ethernet.h"
 
 /* VERSIONS */
-const uint8_t sw_version[]   = "5.22\n\r";
+const uint8_t sw_version[]   = "5.23\n\r";
 uint8_t       fw_version[]   = "000\n\r\0";
 uint8_t       fw_version_x[] = "105\n\r\0"; //expected FW version
 
@@ -380,9 +381,6 @@ int main()
         HW_set_32bit_reg(CPU2FABRIC_REG2, (rval | C2F_REG_SHUTDOWN | C2F_REG_HSC5_EN ));
     }
 
-    /*********************************** INIT OFF CHIP PERIPHERALS **************************************/
-
-
 	/********************************* GENERAL SW STARTUP  *********************************/
     MSS_WD_reload();
 	//clear_console(10);
@@ -432,7 +430,7 @@ int main()
         oled_color = 0xF800; //RED RGB656
     }
 
-    //Read fan speeds from EEPROM Page 3
+    //Read fan speeds from EEPROM Page 4
     dbg_print("\n\rReading Fan speeds from MMC EEPROM page 4:\n\r");
     i2c_eeprom_read(&g_mss_i2c0, I2C_EEPROM_SER_ADDR, 0x40, (uint8_t*) text_buf, 6, (const uint8_t *) "Read page4 from MMC I2C EEPROM: ");
 
@@ -1048,7 +1046,7 @@ int main()
 
         } else if (i2c_s_sd_access == 3) { //write
 
-            sd_write(cmd_buf+CMD_BUF_ADR_OFF, flash_wbuf, 16);
+            sd_write(cmd_buf+CMD_BUF_ADR_OFF, flash_wbuf, 256);
             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, 8, oled_error);
             i2c_s_sd_access = 0;
             MSS_I2C_enable_slave( &g_mss_i2c0 ); //re-enable slave
@@ -2089,8 +2087,8 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         break;
                     case 0x0001: //read flash
                         //dbg_print("I2C_SLAVE:Read flash\n\r");
-                        if (flash_addr & 0xFF000000) {
-                            dbg_print("    ERROR: Maximum allowed address is 0x00FFFFFF\n\r");
+                        if (flash_addr > 0xFFFF00) {
+                            dbg_print("    ERROR: Maximum allowed address is 0x00FFFF00\n\r");
                             write_result_reg(cmd_buf+CMD_BUF_RES_OFF, d16, 1);
                         } else {
                             FLASH_read(flash_addr, flash_rbuf, FLASH_BUF_LEN);
@@ -2198,7 +2196,7 @@ mss_i2c_slave_handler_ret_t i2c_slave_write_handler( mss_i2c_instance_t *instanc
                         i2c_s_sd_access = 2; //SD access executed outside ISR (not working otherwise)
                         MSS_I2C_disable_slave( &g_mss_i2c0 ); //avoid buffer to be overwritten before
                         break;
-                    case 0x0008: //write SD card (16B blocks)
+                    case 0x0008: //write SD card (256B blocks, sector aligned)
                         dbg_print("I2C_SLAVE:SD-Card write\n\r");
                         if (lock) {
                             dbg_print("    ERROR: This command needs the unlock key\n\r");
